@@ -1,11 +1,9 @@
 const { createError } = require('../../helpers');
 const { User } = require('../../models/users.model');
-const pinoLogger = require('../../../logger');
 
 const logout = async (req, res, next) => {
   const existingUser = await User.findById(req.user.id);
   if (!existingUser) {
-    pinoLogger.error('Unauthorized (invalid access token)');
     throw createError(401, 'Unauthorized (invalid access token)');
   }
 

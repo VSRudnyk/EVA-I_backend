@@ -1,6 +1,5 @@
 const { createError } = require('../../helpers');
 const { Database } = require('../../models/database.model');
-const pinoLogger = require('../../../logger');
 
 const getDatabase = async (req, res) => {
   try {

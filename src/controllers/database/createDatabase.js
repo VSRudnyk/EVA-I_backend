@@ -1,6 +1,5 @@
 const { createError } = require('../../helpers');
 const { Database } = require('../../models/database.model');
-const pinoLogger = require('../../../logger');
 
 const createDatabase = async (req, res) => {
   const { tariffPlan } = req.body;
@@ -18,7 +17,6 @@ const createDatabase = async (req, res) => {
     tariffPlan,
   });
   res.status(201).json(createdDatabase);
-  pinoLogger.info({ userId: owner }, 'Database created successfully');
 };
 
 module.exports = createDatabase;

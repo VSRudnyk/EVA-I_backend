@@ -1,6 +1,5 @@
 const ObjectID = require('bson-objectid');
 const { User } = require('../../models/users.model');
-const pinoLogger = require('../../../logger');
 const { sendSmtpEmail } = require('../../helpers/sendSmtpEmail');
 
 const { FRONT_URL } = process.env;
@@ -11,9 +10,6 @@ const forgotPassword = async (req, res) => {
     const user = await User.findOne({ email });
 
     if (!user) {
-      pinoLogger.error(
-        'Sorry, can’t find an account associated with this address'
-      );
       return res.status(401).json({
         message: 'Sorry, can’t find an account associated with this address',
       });
@@ -121,11 +117,8 @@ const forgotPassword = async (req, res) => {
     };
 
     await sendSmtpEmail(message);
-
-    pinoLogger.info({ userId: user._id }, 'Password reset was successful');
     res.status(200).json(userResponse);
   } catch (error) {
-    pinoLogger.error(error.message);
     res.status(error.status).json({ message: error.message });
   }
 };

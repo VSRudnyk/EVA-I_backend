@@ -3,7 +3,6 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const { Database } = require('../../models/database.model');
 const { createError } = require('../../helpers');
-// const pinoLogger = require('../../../logger');
 const { ACCESS_SECRET_KEY, REFRESH_SECRET_KEY } = process.env;
 
 const auth = async (req, res) => {
@@ -35,7 +34,6 @@ console.log(botDatabase._id);
     { new: true }
   );
   res.status(200).json(authBot);
-  // pinoLogger.info({ userId: user._id }, 'User was logged successfully');
 };
 
 module.exports = auth;
