@@ -91,7 +91,7 @@ const register = async (req, res) => {
             confirm your email address:
             <p></p>
             <a
-              href="https://aibot-back-end.onrender.com/api/auth/verify/${verificationCode}"
+              href="https://eva-i-backend.vercel.app/api/auth/verify/${verificationCode}"
               style="
                 font-family: Montserrat, sans-serif;
                 font-size: 14px;

@@ -9,7 +9,7 @@
   "produces": ["application/json"],
   "servers": [
     {
-      "url": "https://aibot-back-end.onrender.com/api/"
+      "url": "https://eva-i-backend.vercel.app/api/"
     },
     {
       "url": "http://localhost:3000/api/"
