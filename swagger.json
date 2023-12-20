@@ -1,0 +1,1199 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "version": "1.0",
+    "title": "EVA-I",
+    "description": "EVA-I API Docs"
+  },
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "servers": [
+    {
+      "url": "https://aibot-back-end.onrender.com/api/"
+    },
+    {
+      "url": "http://localhost:3000/api/"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "Authorization endpoints"
+    },
+    {
+      "name": "User",
+      "description": "Users endpoints"
+    },
+    {
+      "name": "Waitlist",
+      "description": "Waitlist endpoints"
+    },
+    {
+      "name": "Database",
+      "description": "Database endpoints"
+    },
+    {
+      "name": "Logs",
+      "description": "Logs endpoints"
+    }
+  ],
+  "paths": {
+    "/auth/register": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "User registration",
+        "parameters": [],
+        "requestBody": {
+          "description": "Registration's object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegistrationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegistrationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "409": {
+            "description": "This email address is already used",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/auth/verify/{verificationCode}": {
+      "get": {
+        "tags": ["Auth"],
+        "summary": "Verify your account",
+        "parameters": [
+          {
+            "name": "verificationCode",
+            "in": "path",
+            "description": "Code to verify account",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "65390b342e1d57215894d967"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "401": {
+            "description": "Can’t find an account associated with this address",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "User login",
+        "parameters": [],
+        "requestBody": {
+          "description": "Login's object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Can't find an account associated with this address",
+            "content": {}
+          },
+          "403": {
+            "description": "Email not verified",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "get": {
+        "tags": ["Auth"],
+        "summary": "User logout",
+        "parameters": [],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful operation"
+          },
+          "401": {
+            "description": "Unauthorized (invalid access token)",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/auth/refresh": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Get new pair of tokens (use Bearer {refreshToken} instead of accessToken)",
+        "parameters": [],
+        "requestBody": {
+          "description": "Refresh token",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefreshTokensRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RefreshTokensResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body) / No token provided",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized (invalid refresh token)",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/auth/forgot-password": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Forgot password",
+        "parameters": [],
+        "requestBody": {
+          "description": "Forgot password object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ForgotPasswordRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ForgotPasswordResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Can't find an account associated with this address",
+            "content": {}
+          },
+          "403": {
+            "description": "Email not verified",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/auth/reset-password/{token}": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Reset password",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "description": "Token to reset the password",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "65390b342e1d57215894d967"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Reset password object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResetPasswordRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResetPasswordResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Invalid token, user not found",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/auth/current": {
+      "get": {
+        "tags": ["User"],
+        "summary": "Get user's information by access token",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CurrentUserResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (invalid access token)",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/waitlist/{id}": {
+      "get": {
+        "tags": ["Waitlist"],
+        "summary": "Get all users from the waitlist",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id user",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "65390b342e1d57215894d967"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetWaitlistResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User doesn't have access rights to the content",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/waitlist/add": {
+      "post": {
+        "tags": ["Waitlist"],
+        "summary": "Add user to waitlist",
+        "parameters": [],
+        "requestBody": {
+          "description": "Waitlist object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddToWaitlistRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddToWaitlistResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "This email address is already used"
+          }
+        }
+      }
+    },
+    "/database": {
+      "get": {
+        "tags": ["Database"],
+        "summary": "Get user database",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetDatabaseResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (Authorization header is invalid)",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/database/add": {
+      "post": {
+        "tags": ["Database"],
+        "summary": "Add user database",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [],
+        "requestBody": {
+          "description": "Database object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddDatabaseRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddDatabaseResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (Authorization header is invalid)"
+          }
+        }
+      }
+    },
+    "/logs/{id}": {
+      "get": {
+        "tags": ["Logs"],
+        "summary": "Get logs",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id user",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "65390b342e1d57215894d967"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetLogsResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User doesn't have access rights to the content",
+            "content": {}
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "RegistrationRequest": {
+        "type": "object",
+        "required": ["name", "email", "password"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "User's name",
+            "example": "userstest"
+          },
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "description": "User's password",
+            "example": "Qwerty123!"
+          }
+        }
+      },
+      "RegistrationResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "Session's id (needed for /auth/refresh)",
+            "example": "507f1f77bcf86cd799439011"
+          },
+          "email": {
+            "type": "string",
+            "description": "User email",
+            "example": "user@example.com"
+          },
+          "role": {
+            "type": "string",
+            "description": "User role",
+            "example": "User"
+          },
+          "verify": {
+            "type": "string",
+            "description": "Has the user passed email verification?",
+            "example": false
+          },
+          "verificationCode": {
+            "type": "string",
+            "description": "Verification code",
+            "example": "653b570223a1b329e89350de"
+          },
+          "resetPasswordToken": {
+            "type": "string",
+            "description": "Reset password token",
+            "example": ""
+          },
+          "accessToken": {
+            "type": "string",
+            "description": "Access token",
+            "example": null
+          },
+          "refreshToken": {
+            "type": "string",
+            "description": "Refresh token",
+            "example": null
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "Date and time when a user was created",
+            "example": "2023-10-23T09:55:28.448Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "description": "Date and time when a user was updated",
+            "example": "2023-10-23T09:55:28.448Z"
+          }
+        }
+      },
+      "LoginRequest": {
+        "type": "object",
+        "required": ["email", "password"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "description": "User's password",
+            "example": "Qwerty123!"
+          }
+        }
+      },
+      "LoginResponse": {
+        "type": "object",
+        "description": "User data",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "Session's id (needed for /auth/refresh)",
+            "example": "507f1f77bcf86cd799439011"
+          },
+          "email": {
+            "type": "string",
+            "description": "User email",
+            "example": "user@example.com"
+          },
+          "role": {
+            "type": "string",
+            "description": "User role",
+            "example": "User"
+          },
+          "verify": {
+            "type": "string",
+            "description": "Has the user passed email verification?",
+            "example": true
+          },
+          "verificationCode": {
+            "type": "string",
+            "description": "Verification code",
+            "example": ""
+          },
+          "resetPasswordToken": {
+            "type": "string",
+            "description": "Reset password token",
+            "example": ""
+          },
+          "accessToken": {
+            "type": "string",
+            "description": "Access token",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1M2I1NzAyYTE3YmJjOGQ1NDRkMjhjZCIsImlhdCI6MTY5ODM5MTAwNywiZXhwIjoxNjk4NDc3NDA3fQ.TOkzCTBPVXkclIk27hXfZD_SeOZ41eKBbUHTjVCdpkQ"
+          },
+          "refreshToken": {
+            "type": "string",
+            "description": "Refresh token",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MzY0MzEwOGU1ZjFhMjI0YmNmNjk0NiIsImlhdCI6MTY5ODE0NDQxNiwiZXhwIjoxNjk4NzQ5MjE2fQ.gT8CqJwPjcOD8LSSc1ER3R0XlO0iMnaExuESlY61454"
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "Date and time when a user was created",
+            "example": "2023-10-23T09:55:28.448Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "description": "Date and time when a user was updated",
+            "example": "2023-10-23T09:55:28.448Z"
+          }
+        }
+      },
+      "RefreshTokensRequest": {
+        "type": "object",
+        "required": true,
+        "properties": {
+          "refreshToken": {
+            "type": "string",
+            "description": "Refresh token",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0MWQ5NTYwY2FmNDU2N2FhMTNlNmRmNyIsImlhdCI6MTY3OTY2MDcxMywiZXhwIjoxNjgwMjY1NTEzfQ.d045FdD9sHXq3JeEX-gS9PTAywIGtA67Cr_33qmylLw"
+          }
+        }
+      },
+      "RefreshTokensResponse": {
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string",
+            "description": "Access token",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MzY0MzEwOGU1ZjFhMjI0YmNmNjk0NiIsImlhdCI6MTY5ODE0NzM2MiwiZXhwIjoxNjk4MjMzNzYyfQ.6W3v-jBN8c-GPpSOfKoKmOhOwzhliZWjcAbywORSkEs"
+          },
+          "refreshToken": {
+            "type": "string",
+            "description": "Refresh token",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MzY0MzEwOGU1ZjFhMjI0YmNmNjk0NiIsImlhdCI6MTY5ODE0NzM2MiwiZXhwIjoxNjk4NzUyMTYyfQ.5gcKSLLlHPNXYo4zn4BmQ5Gyww48lAbMVFQgIweW7bI"
+          }
+        }
+      },
+      "ForgotPasswordRequest": {
+        "type": "object",
+        "required": ["email"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email"
+          }
+        }
+      },
+      "ForgotPasswordResponse": {
+        "type": "object",
+        "description": "User data",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "Session's id (needed for /auth/refresh)",
+            "example": "507f1f77bcf86cd799439011"
+          },
+          "email": {
+            "type": "string",
+            "description": "User email",
+            "example": "user@example.com"
+          },
+          "role": {
+            "type": "string",
+            "description": "User role",
+            "example": "User"
+          },
+          "verify": {
+            "type": "string",
+            "description": "Has the user passed email verification?",
+            "example": true
+          },
+          "verificationCode": {
+            "type": "string",
+            "description": "Verification code",
+            "example": ""
+          },
+          "resetPasswordToken": {
+            "type": "string",
+            "description": "Reset password token",
+            "example": "6538ce890bc1cb003f40ac5b"
+          },
+          "accessToken": {
+            "type": "string",
+            "description": "Access token",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MzY0MzEwOGU1ZjFhMjI0YmNmNjk0NiIsImlhdCI6MTY5ODE0NzM0NiwiZXhwIjoxNjk4MjMzNzQ2fQ.gIQnpeRMnEAienCqODgpgUoQywPD4kUOPWuYREwg1zs"
+          },
+          "refreshToken": {
+            "type": "string",
+            "description": "Refresh token",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MzY0MzEwOGU1ZjFhMjI0YmNmNjk0NiIsImlhdCI6MTY5ODE0NDQxNiwiZXhwIjoxNjk4NzQ5MjE2fQ.gT8CqJwPjcOD8LSSc1ER3R0XlO0iMnaExuESlY61454"
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "Date and time when a user was created",
+            "example": "2023-10-23T09:55:28.448Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "description": "Date and time when a user was updated",
+            "example": "2023-10-23T09:55:28.448Z"
+          }
+        }
+      },
+      "ResetPasswordRequest": {
+        "type": "object",
+        "required": ["password"],
+        "properties": {
+          "password": {
+            "type": "string",
+            "description": "User's password",
+            "example": "Qwerty123!"
+          }
+        }
+      },
+      "ResetPasswordResponse": {
+        "type": "object",
+        "description": "User data",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "Session's id (needed for /auth/refresh)",
+            "example": "507f1f77bcf86cd799439011"
+          },
+          "email": {
+            "type": "string",
+            "description": "User email",
+            "example": "user@example.com"
+          },
+          "role": {
+            "type": "string",
+            "description": "User role",
+            "example": "User"
+          },
+          "verify": {
+            "type": "string",
+            "description": "Has the user passed email verification?",
+            "example": true
+          },
+          "verificationCode": {
+            "type": "string",
+            "description": "Verification code",
+            "example": ""
+          },
+          "resetPasswordToken": {
+            "type": "string",
+            "description": "Reset password token",
+            "example": ""
+          },
+          "accessToken": {
+            "type": "string",
+            "description": "Access token",
+            "example": ""
+          },
+          "refreshToken": {
+            "type": "string",
+            "description": "Refresh token",
+            "example": ""
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "Date and time when a user was created",
+            "example": "2023-10-23T09:55:28.448Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "description": "Date and time when a user was updated",
+            "example": "2023-10-23T09:55:28.448Z"
+          }
+        }
+      },
+      "CurrentUserResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "Session's id (needed for /auth/refresh)",
+            "example": "507f1f77bcf86cd799439011"
+          },
+          "email": {
+            "type": "string",
+            "description": "User email",
+            "example": "user@example.com"
+          },
+          "role": {
+            "type": "string",
+            "description": "User role",
+            "example": "User"
+          },
+          "verify": {
+            "type": "string",
+            "description": "Has the user passed email verification?",
+            "example": true
+          },
+          "verificationCode": {
+            "type": "string",
+            "description": "Verification code",
+            "example": ""
+          },
+          "resetPasswordToken": {
+            "type": "string",
+            "description": "Reset password token",
+            "example": ""
+          },
+          "accessToken": {
+            "type": "string",
+            "description": "Access token",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1M2I1NzAyYTE3YmJjOGQ1NDRkMjhjZCIsImlhdCI6MTY5ODM5MTAwNywiZXhwIjoxNjk4NDc3NDA3fQ.TOkzCTBPVXkclIk27hXfZD_SeOZ41eKBbUHTjVCdpkQ"
+          },
+          "refreshToken": {
+            "type": "string",
+            "description": "Refresh token",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MzY0MzEwOGU1ZjFhMjI0YmNmNjk0NiIsImlhdCI6MTY5ODE0NDQxNiwiZXhwIjoxNjk4NzQ5MjE2fQ.gT8CqJwPjcOD8LSSc1ER3R0XlO0iMnaExuESlY61454"
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "Date and time when a user was created",
+            "example": "2023-10-23T09:55:28.448Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "description": "Date and time when a user was updated",
+            "example": "2023-10-23T09:55:28.448Z"
+          }
+        }
+      },
+      "AddToWaitlistRequest": {
+        "type": "object",
+        "required": ["name", "email", "phoneNumber", "socialLink"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "User name",
+            "example": "User"
+          },
+          "email": {
+            "type": "string",
+            "description": "User email",
+            "format": "email"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "User phone number",
+            "example": "38066-123-45-67"
+          },
+          "socialLink": {
+            "type": "string",
+            "description": "User social link",
+            "example": "https://www.linkedin.com/in/user/"
+          }
+        }
+      },
+      "AddToWaitlistResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "User id",
+            "example": "653ba49f9bae09e651cfd4f3"
+          },
+          "name": {
+            "type": "string",
+            "description": "User name",
+            "example": "User"
+          },
+          "email": {
+            "type": "string",
+            "description": "User email",
+            "format": "email"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "User phone number",
+            "example": "38066-123-45-67"
+          },
+          "socialLink": {
+            "type": "string",
+            "description": "User social link",
+            "example": "https://www.linkedin.com/in/user/"
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "Date and time when a user was added to waitlist",
+            "example": "2023-10-23T09:55:28.448Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "description": "Date and time when a user was updated",
+            "example": "2023-10-23T09:55:28.448Z"
+          }
+        }
+      },
+      "GetWaitlistResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "transaction id",
+            "example": "62e654c37db24cc7c05b6440"
+          },
+          "name": {
+            "type": "string",
+            "description": "Username",
+            "example": "User"
+          },
+          "email": {
+            "type": "string",
+            "description": "User email",
+            "format": "email"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "User phone number",
+            "example": "+38066-123-45-67"
+          },
+          "socialLink": {
+            "type": "string",
+            "description": "User social link",
+            "example": "https://www.linkedin.com/in/user/"
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "Date and time when a user was added to waitlist",
+            "example": "2023-10-23T09:55:28.448Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "description": "Date and time when a user was updated",
+            "example": "2023-10-23T09:55:28.448Z"
+          }
+        }
+      },
+      "GetDatabaseResponse": {
+        "type": "object",
+        "properties": {
+          "questionAnswer": {
+            "type": "object",
+            "properties": {
+              "question": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "answer": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "hiBye": {
+            "type": "object",
+            "properties": {
+              "salutation": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "farewell": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "_id": {
+            "type": "string"
+          },
+          "owner": {
+            "type": "string"
+          },
+          "tariffPlan": {
+            "type": "string"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "address": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "defaultSalutation": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "pricefinder": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "priceList": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "AddDatabaseRequest": {
+        "type": "object",
+        "required": ["tariffPlan"],
+        "properties": {
+          "tariffPlan": {
+            "type": "string",
+            "description": "User tariff plan",
+            "example": "start"
+          }
+        }
+      },
+      "AddDatabaseResponse": {
+        "type": "object",
+        "properties": {
+          "questionAnswer": {
+            "type": "object",
+            "properties": {
+              "question": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "answer": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "hiBye": {
+            "type": "object",
+            "properties": {
+              "salutation": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "farewell": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "_id": {
+            "type": "string"
+          },
+          "owner": {
+            "type": "string"
+          },
+          "tariffPlan": {
+            "type": "string"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "address": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "defaultSalutation": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "pricefinder": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "priceList": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "settings": {
+            "type": "object",
+            "properties": {
+              "functionality": {
+                "type": "object",
+                "properties": {
+                  "ai_disabled": {
+                    "type": "string",
+                    "example": true
+                  },
+                  "knowledge_enabled": { "type": "string", "example": true },
+                  "chat_history_enabled": { "type": "string", "example": true },
+                  "last_messages": { "type": "string", "example": 6 },
+                  "chat_personality": {
+                    "type": "string",
+                    "example": "You are personal assistant"
+                  },
+                  "price_lists_enabled": { "type": "string", "example": true },
+                  "voice": { "type": "string", "example": true },
+                  "lang": { "type": "string", "example": "ua" }
+                }
+              },
+              "answers": {
+                "type": "object",
+                "properties": {
+                  "max_response_length": {
+                    "type": "string",
+                    "example": 7
+                  },
+                  "max_product_show": {
+                    "type": "string",
+                    "example": 4
+                  },
+                  "temperature_of_answers": {
+                    "type": "string",
+                    "example": 1
+                  },
+                  "max_responses": {
+                    "type": "string",
+                    "example": 20
+                  }
+                }
+              }
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "GetLogsResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Daily email sent!"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

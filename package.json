@@ -1,0 +1,49 @@
+{
+  "name": "aibot-back-end",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "node ./server.js",
+    "start:dev": "nodemon ./server.js",
+    "lint": "eslint **/*.js",
+    "lint:fix": "eslint --fix **/*.js"
+  },
+  "dependencies": {
+    "@sendgrid/mail": "^7.7.0",
+    "bcryptjs": "^2.4.3",
+    "bson-objectid": "^2.0.4",
+    "cloudinary": "^1.36.1",
+    "cors": "^2.8.5",
+    "cors-anywhere": "^0.4.4",
+    "cross-env": "7.0.3",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "express-joi-validation": "^5.0.1",
+    "express-session": "^1.17.3",
+    "joi": "^17.8.4",
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^7.0.2",
+    "morgan": "1.10.0",
+    "node-cron": "^3.0.2",
+    "nodemailer": "^6.9.6",
+    "passport": "^0.6.0",
+    "passport-google-oauth2": "^0.2.0",
+    "pino": "^8.16.0",
+    "pino-http": "^8.5.0",
+    "pino-pretty": "^10.2.3",
+    "swagger-ui-express": "^5.0.0",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "eslint": "7.19.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-config-standard": "16.0.3",
+    "eslint-plugin-import": "2.25.3",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "5.2.0",
+    "nodemon": "^3.0.1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
