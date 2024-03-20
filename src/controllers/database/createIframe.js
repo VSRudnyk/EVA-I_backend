@@ -3,7 +3,7 @@ const mobileView = width < 1000;
 
 const getData = () => {
   var iframe = document.createElement('iframe');
-  iframeElement.src = `https://eva-i.com/chat/widget`;
+  iframe.src = `https://eva-i.com/chat/widget`;
   iframe.style.width = '100px';
   iframe.style.height = '100px';
   iframe.style.position = 'fixed';
