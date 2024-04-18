@@ -14,7 +14,7 @@ const { errorFilter } = require('./src/middlewares');
 const SECRET_SESSION_KEY = process.env.SECRET_SESSION_KEY;
 
 const CSS_URL =
-  'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.6.2/swagger-ui.css';
+  'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.0.0/swagger-ui.css';
 
 const app = express();
 
