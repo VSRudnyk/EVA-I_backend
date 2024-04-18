@@ -13,8 +13,8 @@ const { errorFilter } = require('./src/middlewares');
 
 const SECRET_SESSION_KEY = process.env.SECRET_SESSION_KEY;
 
-const CSS_URL =
-  'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css';
+// const CSS_URL =
+//   'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css';
 
 const app = express();
 
@@ -39,7 +39,8 @@ app.use('/api/database', databaseRouter);
 app.use(
   '/api-docs',
   swaggerUi.serve,
-  swaggerUi.setup(swaggerDocument, { customCssUrl: CSS_URL })
+  swaggerUi.setup(swaggerDocument)
+  // swaggerUi.setup(swaggerDocument, { customCssUrl: CSS_URL })
 );
 
 app.use((req, res) => {
