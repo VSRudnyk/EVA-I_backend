@@ -14,7 +14,11 @@ const nodemailConfig = {
 const transporter = nodemailer.createTransport(nodemailConfig);
 const sendSmtpEmail = async (data) => {
   const email = { ...data, from: NODEMAILER_EMAIL };
-  await transporter.sendMail(email);
+  try {
+    await transporter.sendMail(email);
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 module.exports = { sendSmtpEmail };
