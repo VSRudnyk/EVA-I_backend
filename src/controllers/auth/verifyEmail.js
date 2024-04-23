@@ -2,7 +2,7 @@ const path = require('path');
 const { createError } = require('../../helpers');
 const { User } = require('../../models/users.model');
 
-const { FRONT_URL } = process.env;
+const { FRONT_URL, FRONT_LOCAL_URL } = process.env;
 
 const verifyEmail = async (req, res) => {
   const { verificationCode } = req.params;
@@ -17,7 +17,7 @@ const verifyEmail = async (req, res) => {
     verify: true,
     verificationCode: '',
   });
-  res.redirect(`${FRONT_URL}/registration`);
+  res.redirect(`${FRONT_LOCAL_URL}/registration`);
 };
 
 module.exports = verifyEmail;

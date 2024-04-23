@@ -2,7 +2,7 @@ const ObjectID = require('bson-objectid');
 const { User } = require('../../models/users.model');
 const { sendSmtpEmail } = require('../../helpers/sendSmtpEmail');
 
-const { FRONT_URL } = process.env;
+const { FRONT_URL, FRONT_LOCAL_URL } = process.env;
 
 const forgotPassword = async (req, res) => {
   try {
@@ -91,7 +91,7 @@ const forgotPassword = async (req, res) => {
                 please click on the link below to enter a new password:
                 <p></p>
                 <a
-                  href="${FRONT_URL}/reset-password"
+                  href="${FRONT_LOCAL_URL}/reset-password"
                   style="
                     font-family: Montserrat, sans-serif;
                     font-size: 14px;
