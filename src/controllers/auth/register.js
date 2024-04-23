@@ -13,7 +13,7 @@ const register = async (req, res) => {
   }
   const hashPassword = await bcrypt.hash(password, bcrypt.genSaltSync(10));
   const verificationCode = ObjectID();
-
+ 
   const newUser = await User.create({
     email,
     password: hashPassword,
