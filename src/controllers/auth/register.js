@@ -1,26 +1,51 @@
 const bcrypt = require('bcryptjs');
-const ObjectID = require('bson-objectid');
+const jwt = require('jsonwebtoken');
+const { sign } = require('../../helpers');
 const { createError } = require('../../helpers');
 const { User } = require('../../models/users.model');
 const { sendSmtpEmail } = require('../../helpers/sendSmtpEmail');
 
+const { ACCESS_SECRET_KEY } = process.env;
+
 const register = async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
-  if (user) {
+
+  if (user && user.verify) {
     const error = createError(409, 'This email address is already used');
     throw error;
   }
+
+  if (user) {
+    const token = jwt.verify(
+      user.verificationCode,
+      ACCESS_SECRET_KEY,
+      async (err) => {
+        if (err) {
+          const deletedUser = await User.findOneAndDelete({ email });
+          console.log('deleteUser', deletedUser);
+        }
+      }
+    );
+  }
+
   const hashPassword = await bcrypt.hash(password, bcrypt.genSaltSync(10));
-  const verificationCode = ObjectID();
- 
+  const verificationCode = sign(
+    {
+      userEmail: email,
+    },
+    'access',
+    '1m'
+  );
+
   const newUser = await User.create({
     email,
     password: hashPassword,
     verificationCode,
   });
 
-  const { password: userPassword, ...userResponse } = newUser._doc;
+  const { password: userPassword, _id, ...userResponse } = newUser._doc;
+  const userId = _id.toString();
 
   const mail = {
     to: email,
@@ -91,7 +116,7 @@ const register = async (req, res) => {
             confirm your email address:
             <p></p>
             <a
-              href="https://eva-i-backend.vercel.app/api/auth/verify/${verificationCode}"
+              href="http://localhost:3000/api/auth/verify/${userId}/${verificationCode}"
               style="
                 font-family: Montserrat, sans-serif;
                 font-size: 14px;

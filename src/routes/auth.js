@@ -45,7 +45,10 @@ router.get(
 
 router.get('/current', authorizeMiddleware, controllerWrapper(auth.getCurrent));
 
-router.get('/verify/:verificationCode', controllerWrapper(auth.verifyEmail));
+router.get(
+  '/verify/:id/:verificationCode',
+  controllerWrapper(auth.verifyEmail)
+);
 
 router.post(
   '/forgot-password',

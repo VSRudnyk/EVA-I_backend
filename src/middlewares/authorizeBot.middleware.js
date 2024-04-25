@@ -2,7 +2,6 @@ const { createError } = require('../helpers/index');
 const { verify } = require('../helpers/index');
 const { Database } = require('../models/database.model');
 
-const { ACCESS_SECRET_KEY } = process.env;
 const authorizeMiddleware = async (req, res, next) => {
   const { authorization = '' } = req.headers;
   const [bearer, token] = authorization.split(' ');
@@ -12,7 +11,7 @@ const authorizeMiddleware = async (req, res, next) => {
   }
 
   try {
-    const { id } = verify(token, ACCESS_SECRET_KEY);
+    const { id } = verify(token, 'access');
     const botDatabase = await Database.findById(id);
 
     if (!botDatabase.token) {
