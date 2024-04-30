@@ -10,22 +10,24 @@ const verifyEmail = async (req, res) => {
 
   const user = await User.findOne({ _id: id });
 
-  verify(verificationCode, 'access');
-
+  const isTokenExpired = verify(verificationCode, 'access');
+  if (!isTokenExpired) {
+    res.redirect(`${FRONT_LOCAL_URL}/login?isTokenExpired=true`);
+  }
   if (!user) {
     throw createError(
       401,
       'Sorry, can’t find an account associated with this address'
     );
   } else if (user.verify) {
-    res.redirect(`${FRONT_LOCAL_URL}/registration?verify=true`);
+    res.redirect(`${FRONT_LOCAL_URL}/login?verify=true`);
   }
 
   await User.findByIdAndUpdate(user._id, {
     verify: true,
     verificationCode: '',
   });
-  res.redirect(`${FRONT_LOCAL_URL}/registration`);
+  res.redirect(`${FRONT_LOCAL_URL}/login`);
 };
 
 module.exports = verifyEmail;

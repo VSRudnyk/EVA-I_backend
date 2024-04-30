@@ -1,4 +1,5 @@
-const ObjectID = require('bson-objectid');
+// const ObjectID = require('bson-objectid');
+const { sign, verify } = require('../../helpers');
 const { User } = require('../../models/users.model');
 const { sendSmtpEmail } = require('../../helpers/sendSmtpEmail');
 
@@ -15,7 +16,14 @@ const forgotPassword = async (req, res) => {
       });
     }
 
-    const token = ObjectID();
+    const token = sign(
+      {
+        userEmail: email,
+      },
+      'access',
+      '1m'
+    );
+
     user.resetPasswordToken = token;
     await user.save();
     const { password, ...userResponse } = user._doc;
@@ -91,7 +99,7 @@ const forgotPassword = async (req, res) => {
                 please click on the link below to enter a new password:
                 <p></p>
                 <a
-                  href="${FRONT_LOCAL_URL}/reset-password"
+                  href="${FRONT_LOCAL_URL}/reset-password?token=${token}"
                   style="
                     font-family: Montserrat, sans-serif;
                     font-size: 14px;

@@ -17,8 +17,8 @@ const verify = (token, secret_key) => {
       secret_key === 'access' ? ACCESS_SECRET_KEY : REFRESH_SECRET_KEY
     );
   } catch (error) {
-    console.log(error);
-    throw error;
+    return null;
+    // throw error;
   }
 };
 
