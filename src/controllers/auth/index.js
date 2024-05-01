@@ -7,6 +7,7 @@ const resetPassword = require('./resetPassword');
 const refreshToken = require('./refreshToken');
 const googleAuth = require('./googleAuth');
 const getCurrent = require('./getCurrent');
+const resendEmail = require('./resendEmail');
 
 module.exports = {
   register,
@@ -18,4 +19,5 @@ module.exports = {
   refreshToken,
   googleAuth,
   getCurrent,
+  resendEmail,
 };
