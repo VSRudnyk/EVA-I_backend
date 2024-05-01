@@ -1,10 +1,18 @@
 const bcrypt = require('bcryptjs');
 const { User } = require('../../models/users.model');
+const { verify } = require('../../helpers');
+
+const { FRONT_URL, FRONT_LOCAL_URL } = process.env;
 
 const resetPassword = async (req, res) => {
   try {
     const { token } = req.params;
     const { password } = req.body;
+
+    const isTokenExpired = verify(token, 'access');
+    if (!isTokenExpired) {
+      res.redirect(`${FRONT_LOCAL_URL}/login?isTokenExpired=true`);
+    }
 
     const user = await User.findOne({ resetPasswordToken: token });
 
@@ -12,12 +20,14 @@ const resetPassword = async (req, res) => {
       return res.status(404).json({
         message: 'Invalid token, user not found',
       });
+    } else if (!user.resetPasswordToken) {
+      res.redirect(`${FRONT_LOCAL_URL}/login?verify=true`);
     }
 
     const hashPassword = await bcrypt.hash(password, bcrypt.genSaltSync(10));
 
     user.password = hashPassword;
-    user.resetPasswordToken = '';
+    user.resetPasswordToken = null;
     await user.save();
     const { password: userPassword, ...userResponse } = user._doc;
     res.status(200).json(userResponse);
