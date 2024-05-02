@@ -6,6 +6,8 @@ const { FRONT_LOCAL_URL } = process.env;
 const googleAuth = async (req, res) => {
   const { _id: id } = req.user;
 
+  console.log(id);
+
   const payload = {
     id,
   };
@@ -18,7 +20,8 @@ const googleAuth = async (req, res) => {
     verify: true,
   });
   res.redirect(
-    `${FRONT_LOCAL_URL}?accessToken=${accessToken}&refreshToken=${refreshToken}`
+    // `${FRONT_LOCAL_URL}?accessToken=${accessToken}&refreshToken=${refreshToken}`
+    `${FRONT_LOCAL_URL}/wait-list`
   );
 };
 
