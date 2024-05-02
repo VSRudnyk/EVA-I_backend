@@ -89,6 +89,14 @@ const refreshTokenSchema = Joi.object({
   refreshToken: Joi.string().required(),
 });
 
+const resendEmailSchema = Joi.object({
+  email: Joi.string()
+    .email()
+    .message('Invalid format. Must contain @')
+    .required(),
+    action: Joi.string().optional(),
+});
+
 const User = model('user', userSchema);
 
 module.exports = {
@@ -98,4 +106,5 @@ module.exports = {
   forgotPasswordSchema,
   resetPasswordSchema,
   refreshTokenSchema,
+  resendEmailSchema,
 };

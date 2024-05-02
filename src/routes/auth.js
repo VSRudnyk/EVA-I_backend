@@ -13,6 +13,7 @@ const {
   forgotPasswordSchema,
   resetPasswordSchema,
   refreshTokenSchema,
+  resendEmailSchema
 } = require('../models/users.model');
 
 router.post(
@@ -47,7 +48,7 @@ router.get('/current', authorizeMiddleware, controllerWrapper(auth.getCurrent));
 
 router.post(
   '/resend',
-  validationMiddleware(forgotPasswordSchema),
+  validationMiddleware(resendEmailSchema),
   controllerWrapper(auth.resendEmail)
 );
 

@@ -5,10 +5,8 @@ const { sendSmtpEmail } = require('../../helpers/sendSmtpEmail');
 
 const resendEmail = async (req, res) => {
   const { email, action } = req.body;
-  const user = await User.findOne({ email });
 
-  console.log('req url', req.url);
-  console.log('action', action);
+  const user = await User.findOne({ email });
 
   if (!user) {
     return res.status(401).json({
@@ -26,11 +24,11 @@ const resendEmail = async (req, res) => {
 
   let updatedUser;
 
-  if (req.url === '/forgot-password') {
+  if (action === '/forgot-password') {
     updatedUser = await User.findByIdAndUpdate(user._id, {
       resetPasswordToken: token,
     });
-  } else {
+  } else if (action === '/registration') {
     updatedUser = await User.findByIdAndUpdate(user._id, {
       verificationCode: token,
     });
@@ -40,7 +38,7 @@ const resendEmail = async (req, res) => {
   const userId = _id.toString();
 
   try {
-    await sendSmtpEmail(email, token, userId, req.url);
+    await sendSmtpEmail(email, token, userId, action);
     res.status(200).json(userResponse);
   } catch (error) {
     res.status(error.status).json({ message: error.message });
