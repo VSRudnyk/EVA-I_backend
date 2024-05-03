@@ -27,6 +27,7 @@ const verifyEmail = async (req, res) => {
     verify: true,
     verificationCode: null,
   });
+
   res.redirect(`${FRONT_LOCAL_URL}/login`);
 };
 

@@ -17,7 +17,7 @@ const userSchema = new Schema(
     role: {
       type: String,
       enum: ['Admin', 'User'],
-      default: 'User'
+      default: 'User',
     },
     verify: {
       type: Boolean,
@@ -38,6 +38,10 @@ const userSchema = new Schema(
     refreshToken: {
       type: String,
       default: null,
+    },
+    expireAt: {
+      type: Date,
+      default: Date.now,
     },
   },
   { versionKey: false, timestamps: true }
@@ -94,10 +98,15 @@ const resendEmailSchema = Joi.object({
     .email()
     .message('Invalid format. Must contain @')
     .required(),
-    action: Joi.string().optional(),
+  action: Joi.string().optional(),
 });
 
 const User = model('user', userSchema);
+
+User.collection.createIndex(
+  { expireAt: 1 },
+  { expireAfterSeconds: 0, partialFilterExpression: { verify: false } }
+);
 
 module.exports = {
   User,
