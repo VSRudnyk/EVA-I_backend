@@ -49,8 +49,8 @@ const userSchema = new Schema(
 
 const registerSchema = Joi.object({
   email: Joi.string()
-    .email()
-    .message('Invalid format. Must contain @')
+    .email({ tlds: { allow: false } })
+    // .message('Invalid domains name')
     .required(),
   password: Joi.string()
     .required()
@@ -62,8 +62,8 @@ const registerSchema = Joi.object({
 });
 const loginSchema = Joi.object({
   email: Joi.string()
-    .email()
-    .message('Invalid format. Must contain @')
+    .email({ tlds: { allow: false } })
+    // .message('Invalid domains name')
     .required(),
   password: Joi.string()
     .pattern(/^(?=.*[A-Z])(?=.*[0-9])(?=.*[\W_])[A-Za-z0-9\W_]{8,}$/)
@@ -75,8 +75,8 @@ const loginSchema = Joi.object({
 
 const forgotPasswordSchema = Joi.object({
   email: Joi.string()
-    .email()
-    .message('Invalid format. Must contain @')
+    .email({ tlds: { allow: false } })
+    // .message('Invalid domains name')
     .required(),
 });
 
@@ -95,8 +95,8 @@ const refreshTokenSchema = Joi.object({
 
 const resendEmailSchema = Joi.object({
   email: Joi.string()
-    .email()
-    .message('Invalid format. Must contain @')
+    .email({ tlds: { allow: false } })
+    // .message('Invalid domains name')
     .required(),
   action: Joi.string().optional(),
 });
