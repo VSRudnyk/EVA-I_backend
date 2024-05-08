@@ -4,17 +4,14 @@ const session = require('express-session');
 const logger = require('morgan');
 var cors = require('cors');
 const passport = require('passport');
-const swaggerUI = require('swagger-ui-express');
-const swaggerDocument = require('./swagger.json');
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger-output.json');
 const authRouter = require('./src/routes/auth');
 const waitListRouter = require('./src/routes/waitList');
 const databaseRouter = require('./src/routes/database');
 const { errorFilter } = require('./src/middlewares');
 
 const SECRET_SESSION_KEY = process.env.SECRET_SESSION_KEY;
-
-const CSS_URL =
-  'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css';
 
 const app = express();
 
@@ -38,9 +35,8 @@ app.use('/api/waitlist', waitListRouter);
 app.use('/api/database', databaseRouter);
 app.use(
   '/api-docs',
-  swaggerUI.serve,
-  // swaggerUi.setup(swaggerDocument)
-  swaggerUI.setup(swaggerDocument, { customCssUrl: CSS_URL })
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerDocument)
 );
 
 app.use((req, res) => {
