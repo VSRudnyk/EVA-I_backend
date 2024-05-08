@@ -36,12 +36,7 @@ app.use(passport.session());
 app.use('/api/auth', authRouter);
 app.use('/api/waitlist', waitListRouter);
 app.use('/api/database', databaseRouter);
-app.use(
-  '/api-docs',
-  swaggerUi.serve,
-  // swaggerUi.setup(swaggerDocument)
-  swaggerUi.setup(swaggerDocument, { customCssUrl: CSS_URL })
-);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use((req, res) => {
   res.status(404).json({ message: 'Not found' });
