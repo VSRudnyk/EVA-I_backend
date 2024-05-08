@@ -34,7 +34,7 @@ const login = async (req, res) => {
 
   const loginedUser = await User.findByIdAndUpdate(
     user._id,
-    { accessToken, refreshToken },
+    { accessToken, refreshToken, resetPasswordToken: null },
     { new: true }
   ).select('-password');
   res.status(200).json(loginedUser);
