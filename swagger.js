@@ -5,8 +5,8 @@ const doc = {
     title: 'My API',
     description: 'Description',
   },
-  host: 'localhost:3000',
-  schemes: ['http'],
+  host: 'eva-i-backend.vercel.app',
+  schemes: ['https'],
 };
 
 const outputFile = './swagger-output.json';
