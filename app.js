@@ -4,7 +4,7 @@ const session = require('express-session');
 const logger = require('morgan');
 var cors = require('cors');
 const passport = require('passport');
-const swaggerUi = require('swagger-ui-express');
+const swaggerUI = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
 const authRouter = require('./src/routes/auth');
 const waitListRouter = require('./src/routes/waitList');
@@ -14,7 +14,7 @@ const { errorFilter } = require('./src/middlewares');
 const SECRET_SESSION_KEY = process.env.SECRET_SESSION_KEY;
 
 const CSS_URL =
-  'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.0.0/swagger-ui.css';
+  'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css';
 
 const app = express();
 
@@ -36,7 +36,12 @@ app.use(passport.session());
 app.use('/api/auth', authRouter);
 app.use('/api/waitlist', waitListRouter);
 app.use('/api/database', databaseRouter);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use(
+  '/api-docs',
+  swaggerUI.serve,
+  // swaggerUi.setup(swaggerDocument)
+  swaggerUI.setup(swaggerDocument, { customCssUrl: CSS_URL })
+);
 
 app.use((req, res) => {
   res.status(404).json({ message: 'Not found' });
