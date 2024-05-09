@@ -18,6 +18,13 @@ const nodemailConfig = {
 
 const transporter = nodemailer.createTransport(nodemailConfig);
 const sendSmtpEmail = async (email, token, userId, path) => {
+  const chosePath = (path) => {
+    if (path === '/forgot-password' || path === '/reset-password') {
+      return true;
+    } else if (path === '/verification') {
+      return false;
+    }
+  };
   const fogotPasswordMessage = {
     email,
     subject: 'Request to reset your EVA-I password',
@@ -44,14 +51,12 @@ const sendSmtpEmail = async (email, token, userId, path) => {
   const mail = {
     to: email,
     from: NODEMAILER_EMAIL,
-    subject:
-      path === '/forgot-password'
-        ? fogotPasswordMessage.subject
-        : verifyAccountMessage.subject,
-    text:
-      path === '/forgot-password'
-        ? fogotPasswordMessage.text
-        : verifyAccountMessage.text,
+    subject: chosePath(path)
+      ? fogotPasswordMessage.subject
+      : verifyAccountMessage.subject,
+    text: chosePath(path)
+      ? fogotPasswordMessage.text
+      : verifyAccountMessage.text,
     html: `
         <table style="border-spacing: 0px; border-collapse: collapse">
       <tbody>
@@ -112,20 +117,20 @@ const sendSmtpEmail = async (email, token, userId, path) => {
             "
           >
             ${
-              path === '/forgot-password'
+              chosePath(path)
                 ? fogotPasswordMessage.salutationText
                 : verifyAccountMessage.salutationText
             }
             <p></p>
             ${
-              path === '/forgot-password'
+              chosePath(path)
                 ? fogotPasswordMessage.actionText
                 : verifyAccountMessage.actionText
             }
             <p></p>
             <a
               href="${
-                path === '/forgot-password'
+                chosePath(path)
                   ? fogotPasswordMessage.link
                   : verifyAccountMessage.link
               }"
@@ -139,7 +144,7 @@ const sendSmtpEmail = async (email, token, userId, path) => {
                 color: #07061f;
               "
               >${
-                path === '/forgot-password'
+                chosePath(path)
                   ? fogotPasswordMessage.textLink
                   : verifyAccountMessage.textLink
               }</a

@@ -25,11 +25,11 @@ const userSchema = new Schema(
     },
     verificationCode: {
       type: String,
-      default: '',
+      default: null,
     },
     resetPasswordToken: {
       type: String,
-      default: '',
+      default: null,
     },
     accessToken: {
       type: String,
