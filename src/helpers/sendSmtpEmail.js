@@ -29,7 +29,7 @@ const sendSmtpEmail = async (email, token, userId, path) => {
     email,
     subject: 'Request to reset your EVA-I password',
     text: 'Click on the link in this email to enter a new password',
-    link: `${FRONT_LOCAL_URL}/reset-password?token=${token}`,
+    link: `${FRONT_URL}/reset-password?token=${token}`,
     textLink: 'Reset your password',
     salutationText:
       'Hi, we’ve received a request to reset your EVA-I password.',

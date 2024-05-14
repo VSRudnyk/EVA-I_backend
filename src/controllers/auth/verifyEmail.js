@@ -12,7 +12,7 @@ const verifyEmail = async (req, res) => {
 
   const isTokenExpired = verify(verificationCode, 'access');
   if (!isTokenExpired) {
-    res.redirect(`${FRONT_LOCAL_URL}/verification?isTokenExpired=true`);
+    res.redirect(`${FRONT_URL}/verification?isTokenExpired=true`);
   }
   if (!user) {
     throw createError(
@@ -20,7 +20,7 @@ const verifyEmail = async (req, res) => {
       'Sorry, can’t find an account associated with this address'
     );
   } else if (user.verify) {
-    res.redirect(`${FRONT_LOCAL_URL}/verification?verified=true`);
+    res.redirect(`${FRONT_URL}/verification?verified=true`);
   }
 
   await User.findByIdAndUpdate(user._id, {
@@ -28,7 +28,7 @@ const verifyEmail = async (req, res) => {
     verificationCode: null,
   });
 
-  res.redirect(`${FRONT_LOCAL_URL}/verification?verify=true`);
+  res.redirect(`${FRONT_URL}/verification?verify=true`);
 };
 
 module.exports = verifyEmail;

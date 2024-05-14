@@ -1,7 +1,7 @@
 const { sign } = require('../../helpers');
 const { User } = require('../../models/users.model');
 
-const { FRONT_LOCAL_URL } = process.env;
+const { FRONT_LOCAL_URL, FRONT_URL } = process.env;
 
 const googleAuth = async (req, res) => {
   const { _id: id } = req.user;
@@ -21,7 +21,7 @@ const googleAuth = async (req, res) => {
   });
   res.redirect(
     // `${FRONT_LOCAL_URL}?accessToken=${accessToken}&refreshToken=${refreshToken}`
-    `${FRONT_LOCAL_URL}/wait-list`
+    `${FRONT_URL}/wait-list`
   );
 };
 
