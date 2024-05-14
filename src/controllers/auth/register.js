@@ -26,11 +26,11 @@ const register = async (req, res) => {
       userEmail: email,
     },
     'access',
-    '5m'
+    '15m'
   );
 
   const expireAt = new Date();
-  expireAt.setMinutes(expireAt.getMinutes() + 5);
+  expireAt.setMinutes(expireAt.getMinutes() + 15);
 
   const newUser = await User.create({
     email,

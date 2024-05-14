@@ -152,7 +152,7 @@ const sendSmtpEmail = async (email, token, userId, path) => {
             <p></p>
             If you didn’t request this email, just ignore it.
             <p></p>
-            Please note that the link will expire in 24 hours.
+            Please note that the link will expire in 15 minutes.
             <p></p>
             Best regards
             <br />
