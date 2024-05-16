@@ -8,12 +8,12 @@ const login = async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
   if (!user) {
-    const error = createError(401, 'Wrong data');
+    const error = createError(401, 'Wrong email or password');
     throw error;
   }
   const passwordCompare = await bcrypt.compare(password, user.password);
   if (!passwordCompare) {
-    const error = createError(401, 'Wrong data');
+    const error = createError(401, 'Wrong email or password');
     throw error;
   }
 
