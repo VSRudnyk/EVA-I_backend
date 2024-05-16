@@ -8,10 +8,7 @@ const login = async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
   if (!user) {
-    const error = createError(
-      401,
-      "Sorry, can't find an account associated with this address"
-    );
+    const error = createError(401, 'Wrong data');
     throw error;
   }
   const passwordCompare = await bcrypt.compare(password, user.password);
