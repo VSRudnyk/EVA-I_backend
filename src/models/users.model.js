@@ -56,20 +56,18 @@ const registerSchema = Joi.object({
     .required()
     .pattern(/^(?=.*[A-Z])(?=.*[0-9])(?=.*[\W_])[A-Za-z0-9\W_]{8,}$/)
     .message(
-      'Password must contain at least 8 characters, including at least 1 uppercase letter, 1 number and 1 symbol'
+      'Password must contain at least 8 and not more than 16 characters, including at least 1 uppercase letter, 1 number and 1 symbol'
     ),
   name: Joi.string().optional(),
 });
 const loginSchema = Joi.object({
   email: Joi.string()
     .email({ tlds: { allow: false } })
-    // .message('Invalid domains name')
+    .message('Wrong email or password')
     .required(),
   password: Joi.string()
     .pattern(/^(?=.*[A-Z])(?=.*[0-9])(?=.*[\W_])[A-Za-z0-9\W_]{8,}$/)
-    .message(
-      'Password must contain at least 8 characters, including at least 1 uppercase letter, 1 number and 1 symbol'
-    )
+    .message('Wrong email or password')
     .required(),
 });
 
