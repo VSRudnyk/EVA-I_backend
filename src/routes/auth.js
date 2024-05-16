@@ -13,7 +13,7 @@ const {
   forgotPasswordSchema,
   resetPasswordSchema,
   refreshTokenSchema,
-  resendEmailSchema
+  resendEmailSchema,
 } = require('../models/users.model');
 
 router.post(
@@ -55,6 +55,11 @@ router.post(
 router.get(
   '/verify/:id/:verificationCode',
   controllerWrapper(auth.verifyEmail)
+);
+
+router.get(
+  '/verify-token/:resetPasswordToken',
+  controllerWrapper(auth.verifyPassToken)
 );
 
 router.post(

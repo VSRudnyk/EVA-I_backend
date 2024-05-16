@@ -8,6 +8,7 @@ const refreshToken = require('./refreshToken');
 const googleAuth = require('./googleAuth');
 const getCurrent = require('./getCurrent');
 const resendEmail = require('./resendEmail');
+const verifyPassToken = require('./verifyPassToken');
 
 module.exports = {
   register,
@@ -20,4 +21,5 @@ module.exports = {
   googleAuth,
   getCurrent,
   resendEmail,
+  verifyPassToken,
 };

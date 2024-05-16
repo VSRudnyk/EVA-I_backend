@@ -6,8 +6,6 @@ const { FRONT_LOCAL_URL, FRONT_URL } = process.env;
 const googleAuth = async (req, res) => {
   const { _id: id } = req.user;
 
-  console.log(id);
-
   const payload = {
     id,
   };
