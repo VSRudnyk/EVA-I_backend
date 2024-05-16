@@ -82,7 +82,7 @@ const resetPasswordSchema = Joi.object({
   password: Joi.string()
     .pattern(/^(?=.*[A-Z])(?=.*[0-9])(?=.*[\W_])[A-Za-z0-9\W_]{8,}$/)
     .message(
-      'Password must contain at least 8 characters, including at least 1 uppercase letter, 1 number and 1 symbol'
+      'Password must contain at least 8 and not more than 16 characters, including at least 1 uppercase letter, 1 number and 1 symbol'
     )
     .required(),
 });
