@@ -1,5 +1,5 @@
 const nodemailer = require('nodemailer');
-const { NODEMAILER_PASSWORD, NODEMAILER_EMAIL, FRONT_URL, FRONT_LOCAL_URL } =
+const { NODEMAILER_PASSWORD, NODEMAILER_EMAIL, BACK_URL, BACK_LOCAL_URL } =
   process.env;
 
 const nodemailConfig = {
@@ -29,7 +29,7 @@ const sendSmtpEmail = async (email, token, userId, path) => {
     email,
     subject: 'Request to reset your EVA-I password',
     text: 'Click on the link in this email to enter a new password',
-    link: `${FRONT_URL}/reset-password?token=${token}`,
+    link: `${BACK_URL}/api/auth/verify-token/${token}`,
     textLink: 'Reset your password',
     salutationText:
       'Hi, we’ve received a request to reset your EVA-I password.',
@@ -41,7 +41,7 @@ const sendSmtpEmail = async (email, token, userId, path) => {
     email,
     subject: 'Confirm your email address',
     text: 'Click on the link in this email to confirm your email address',
-    link: `https://eva-i-backend.vercel.app/api/auth/verify/${userId}/${token}`,
+    link: `${BACK_URL}/api/auth/verify/${userId}/${token}`,
     textLink: 'Confirm email address',
     salutationText: 'Hi, thank you for creating an account!',
     actionText:

@@ -18,7 +18,7 @@ const forgotPassword = async (req, res) => {
         userEmail: email,
       },
       'access',
-      '30m'
+      '3m'
     );
 
     user.resetPasswordToken = token;
