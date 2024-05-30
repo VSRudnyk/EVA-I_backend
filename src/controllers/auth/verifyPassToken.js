@@ -11,17 +11,14 @@ const verifyPassToken = async (req, res) => {
   const user = await User.findOne({ resetPasswordToken });
 
   if (!isTokenExpired && user) {
-    console.log('token has expared, redirect to front');
     user.resetPasswordToken = null;
     await user.save();
-    res.redirect(`${FRONT_LOCAL_URL}/reset-password?tokenExpired=true`);
+    res.redirect(`${FRONT_URL}/reset-password?tokenExpired=true`);
   }
   if ((!isTokenExpired && !user) || (isTokenExpired && !user)) {
-    console.log('token empty in database, redirect to front');
-    res.redirect(`${FRONT_LOCAL_URL}/reset-password?usedLink=true`);
+    res.redirect(`${FRONT_URL}/reset-password?usedLink=true`);
   }
-  console.log('token has not expare, redirect to front');
-  res.redirect(`${FRONT_LOCAL_URL}/reset-password?token=${resetPasswordToken}`);
+  res.redirect(`${FRONT_URL}/reset-password?token=${resetPasswordToken}`);
 };
 
 module.exports = verifyPassToken;
