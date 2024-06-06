@@ -1,14 +1,14 @@
 const { sign } = require('../../helpers');
 require('dotenv').config();
-const { Database } = require('../../models/database.model');
+const { Assistant } = require('../../models/assistant.model');
 const { createError } = require('../../helpers');
 
-const auth = async (req, res) => {
+const authAssistant = async (req, res) => {
   const { _id } = req.body;
 
-  const botDatabase = await Database.findOne({ _id });
+  const assistantData = await Assistant.findOne({ _id });
 
-  if (!botDatabase) {
+  if (!assistantData) {
     const error = createError(
       401,
       "Sorry, can't find an account associated with this id"
@@ -17,7 +17,7 @@ const auth = async (req, res) => {
   }
 
   const payload = {
-    id: botDatabase._id,
+    id: assistantData._id,
   };
 
   const token = sign(payload, 'access', '1d');
@@ -25,12 +25,12 @@ const auth = async (req, res) => {
   //     expiresIn: '7d',
   //   });
 
-  const authBot = await Database.findByIdAndUpdate(
-    botDatabase._id,
+  const authBot = await Assistant.findByIdAndUpdate(
+    assistantData._id,
     { token },
     { new: true }
   );
   res.status(200).json(authBot);
 };
 
-module.exports = auth;
+module.exports = authAssistant;

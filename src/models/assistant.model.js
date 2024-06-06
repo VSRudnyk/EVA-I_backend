@@ -1,7 +1,7 @@
 const { Schema, model } = require('mongoose');
 const Joi = require('joi');
 
-const databaseSchema = new Schema(
+const assistantSchema = new Schema(
   {
     owner: String,
     token: String,
@@ -121,13 +121,13 @@ const databaseSchema = new Schema(
   { versionKey: false, timestamps: true }
 );
 
-const createDatabaseSchema = Joi.object({
+const createAssistantSchema = Joi.object({
   tariffPlan: Joi.string().required(),
 });
 
-const Database = model('database', databaseSchema);
+const Assistant = model('assistant', assistantSchema);
 
 module.exports = {
-  Database,
-  createDatabaseSchema,
+  Assistant,
+  createAssistantSchema,
 };

@@ -1,8 +1,8 @@
 const { createError } = require('../helpers/index');
 const { verify } = require('../helpers/index');
-const { Database } = require('../models/database.model');
+const { Assistant } = require('../models/assistant.model');
 
-const authorizeMiddleware = async (req, res, next) => {
+const authAssistantMiddleware = async (req, res, next) => {
   const { authorization = '' } = req.headers;
   const [bearer, token] = authorization.split(' ');
 
@@ -12,16 +12,16 @@ const authorizeMiddleware = async (req, res, next) => {
 
   try {
     const { id } = verify(token, 'access');
-    const botDatabase = await Database.findById(id);
+    const assistantData = await Assistant.findById(id);
 
-    if (!botDatabase.token) {
+    if (!assistantData.token) {
       next(createError(401, 'Not authorized'));
     }
-    req.botDatabase = botDatabase;
+    req.assistantData = assistantData;
     next();
   } catch (error) {
     next(createError(401, 'Token is invalid'));
   }
 };
 
-module.exports = authorizeMiddleware;
+module.exports = authAssistantMiddleware;

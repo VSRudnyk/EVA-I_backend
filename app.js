@@ -8,7 +8,7 @@ const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
 const authRouter = require('./src/routes/auth');
 const waitListRouter = require('./src/routes/waitList');
-const databaseRouter = require('./src/routes/database');
+const assistantsRouter = require('./src/routes/assistants');
 const { errorFilter } = require('./src/middlewares');
 
 const SECRET_SESSION_KEY = process.env.SECRET_SESSION_KEY;
@@ -32,7 +32,7 @@ app.use(passport.session());
 
 app.use('/api/auth', authRouter);
 app.use('/api/waitlist', waitListRouter);
-app.use('/api/database', databaseRouter);
+app.use('/api/assistants', assistantsRouter);
 app.use(
   '/api-docs',
   swaggerUi.serve,
