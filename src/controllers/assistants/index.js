@@ -6,6 +6,7 @@ const updateAssistant = require('./updateAssistant');
 const authAssistant = require('./authAssistant');
 const getCurrentAssistant = require('./getCurrentAssistant');
 const getJs = require('./getJs');
+const authUser = require('./authUser');
 
 module.exports = {
   createAssistant,
@@ -16,4 +17,5 @@ module.exports = {
   authAssistant,
   getCurrentAssistant,
   getJs,
+  authUser,
 };
