@@ -5,7 +5,7 @@ const { User } = require('../../models/users.model');
 const { sendSmtpEmail } = require('../../helpers/sendSmtpEmail');
 
 const register = async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, name } = req.body;
   const user = await User.findOne({ email });
 
   if (user && user.verify) {
@@ -34,6 +34,7 @@ const register = async (req, res) => {
 
   const newUser = await User.create({
     email,
+    name,
     password: hashPassword,
     verificationCode,
     expireAt,
