@@ -8,16 +8,20 @@ const refreshToken = async (req, res) => {
   try {
     const { id } = verify(token, 'refresh');
 
-    const isExist = await User.findOne({ refreshToken: token });
-    if (!isExist) {
+    const user = await User.findOne({ refreshToken: token });
+    if (!user) {
       const error = createError(401, 'Token invalid');
       throw error;
     }
 
     const payload = { id };
 
-    const accessToken = sign(payload, 'access', '1d');
-    const refreshToken = sign(payload, 'refresh', '7d');
+    const accessToken = sign(payload, 'access', '1m');
+    const refreshToken = sign(payload, 'refresh', '5m');
+
+    user.accessToken = accessToken;
+    user.refreshToken = refreshToken;
+    await user.save();
 
     res.json({ accessToken, refreshToken });
   } catch (error) {
