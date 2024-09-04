@@ -117,6 +117,13 @@ const assistantSchema = new Schema(
         },
       },
     },
+    users: [
+      {
+        id: String,
+        name: String,
+        email: String,
+      },
+    ],
   },
   { versionKey: false, timestamps: true }
 );

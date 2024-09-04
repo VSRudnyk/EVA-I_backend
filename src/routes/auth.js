@@ -80,4 +80,6 @@ router.post(
   controllerWrapper(auth.refreshToken)
 );
 
+router.post('/upload', controllerWrapper(auth.upload));
+
 module.exports = router;
