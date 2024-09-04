@@ -18,7 +18,7 @@ const app = express();
 app.use(logger('dev'));
 
 const corsOptions = {
-  origin: 'https://eva-i.com/',
+  origin: 'https://eva-i.com',
   optionsSuccessStatus: 200,
 };
 app.use(cors(corsOptions));
