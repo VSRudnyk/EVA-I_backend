@@ -6,8 +6,8 @@ const nodemailConfig = {
   host: 'smtp.ukr.net',
   port: 465,
   secure: true,
-  logger: true,
-  debug: true,
+  // logger: true,
+  // debug: true,
   secureConnection: false,
   auth: {
     user: NODEMAILER_EMAIL,

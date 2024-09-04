@@ -17,10 +17,26 @@ const app = express();
 
 app.use(logger('dev'));
 
+// const corsOptions = {
+//   origin: 'https://eva-i.com',
+//   optionsSuccessStatus: 200,
+// };
+// app.use(cors(corsOptions));
+
+const allowedOrigins = ['https://eva-i.com', 'http://localhost:5173'];
+
 const corsOptions = {
-  origin: 'https://eva-i.com',
-  optionsSuccessStatus: 200,
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+  allowedHeaders: 'Content-Type, Authorization',
 };
+
 app.use(cors(corsOptions));
 
 app.use(express.json());
