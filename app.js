@@ -16,7 +16,12 @@ const SECRET_SESSION_KEY = process.env.SECRET_SESSION_KEY;
 const app = express();
 
 app.use(logger('dev'));
-app.use(cors());
+
+const corsOptions = {
+  origin: 'https://eva-i.com/',
+  optionsSuccessStatus: 200,
+};
+app.use(cors(corsOptions));
 
 app.use(express.json());
 app.use(
@@ -33,11 +38,7 @@ app.use(passport.session());
 app.use('/api/auth', authRouter);
 app.use('/api/waitlist', waitListRouter);
 app.use('/api/assistants', assistantsRouter);
-app.use(
-  '/api-docs',
-  swaggerUi.serve,
-  swaggerUi.setup(swaggerDocument)
-);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use((req, res) => {
   res.status(404).json({ message: 'Not found' });
