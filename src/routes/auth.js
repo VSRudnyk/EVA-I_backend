@@ -52,7 +52,10 @@ router.post(
   controllerWrapper(auth.resendEmail)
 );
 
-router.get('/verify/:verificationCode', controllerWrapper(auth.verifyEmail));
+router.get(
+  '/verify/:id/:verificationCode',
+  controllerWrapper(auth.verifyEmail)
+);
 
 router.get(
   '/verify-token/:resetPasswordToken',
