@@ -24,6 +24,7 @@ const register = async (req, res) => {
   const verificationCode = sign(
     {
       userEmail: email,
+      uniqueValue: Date.now(),
     },
     'access',
     '15m'

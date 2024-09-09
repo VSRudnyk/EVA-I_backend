@@ -18,6 +18,7 @@ const resendEmail = async (req, res) => {
   const token = sign(
     {
       userEmail: email,
+      uniqueValue: Date.now(),
     },
     'access',
     '1m'

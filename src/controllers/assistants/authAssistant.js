@@ -18,6 +18,7 @@ const authAssistant = async (req, res) => {
 
   const payload = {
     id: assistantData._id,
+    uniqueValue: Date.now(),
   };
 
   const token = sign(payload, 'access', '1d');

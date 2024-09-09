@@ -16,6 +16,7 @@ const forgotPassword = async (req, res) => {
     const token = sign(
       {
         userEmail: email,
+        uniqueValue: Date.now(),
       },
       'access',
       '15m'

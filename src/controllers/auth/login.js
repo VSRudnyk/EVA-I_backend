@@ -24,6 +24,7 @@ const login = async (req, res) => {
 
   const payload = {
     id: user._id,
+    uniqueValue: Date.now(),
   };
 
   const accessToken = sign(payload, 'access', '1m');

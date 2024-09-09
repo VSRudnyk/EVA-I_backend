@@ -8,6 +8,7 @@ const googleAuth = async (req, res) => {
 
   const payload = {
     id,
+    uniqueValue: Date.now(),
   };
 
   const accessToken = sign(payload, 'access', '1d');
