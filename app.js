@@ -26,9 +26,9 @@ app.use(
     },
   }),
   helmet.noSniff(), // Защита от MIME атак
-  helmet.referrerPolicy({ policy: 'no-referrer' }), // Политика Referrer
-  helmet.crossOriginOpenerPolicy({ policy: 'same-origin' }), // Изоляция контента
-  helmet.crossOriginResourcePolicy({ policy: 'same-site' }) // Политика ресурсов
+  helmet.referrerPolicy({ policy: 'no-referrer' }) // Политика Referrer
+  // helmet.crossOriginOpenerPolicy({ policy: 'same-origin' }), // Изоляция контента
+  // helmet.crossOriginResourcePolicy({ policy: 'same-site' }) // Политика ресурсов
 );
 // app.use(
 //   helmet.contentSecurityPolicy({
