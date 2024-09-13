@@ -19,7 +19,7 @@ app.use(
   helmet.contentSecurityPolicy({
     directives: {
       defaultSrc: ["'self'"], // Только с того же источника
-      frameAncestors: ["'self'", 'https://eva-i.com'], // Только с определенных источников
+      frameAncestors: ["'self'", 'https://evatest-2aebdf1ed009.herokuapp.com'], // Только с определенных источников
       scriptSrc: ["'self'", "'unsafe-inline'"], // Пример настройки для скриптов
       objectSrc: ["'none'"], // Запрещает загрузку объектов (например, flash)
       upgradeInsecureRequests: [], // Принудительно использует HTTPS для всех ресурсов
