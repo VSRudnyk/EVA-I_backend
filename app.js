@@ -1,5 +1,6 @@
 require('dotenv').config();
 const express = require('express');
+const helmet = require('helmet');
 const session = require('express-session');
 const logger = require('morgan');
 var cors = require('cors');
@@ -14,6 +15,29 @@ const { errorFilter } = require('./src/middlewares');
 const SECRET_SESSION_KEY = process.env.SECRET_SESSION_KEY;
 
 const app = express();
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"], // Только с того же источника
+      frameAncestors: ["'self'", 'https://eva-i.com'], // Только с определенных источников
+      scriptSrc: ["'self'", "'unsafe-inline'"], // Пример настройки для скриптов
+      objectSrc: ["'none'"], // Запрещает загрузку объектов (например, flash)
+      upgradeInsecureRequests: [], // Принудительно использует HTTPS для всех ресурсов
+    },
+  }),
+  helmet.noSniff(), // Защита от MIME атак
+  helmet.referrerPolicy({ policy: 'no-referrer' }), // Политика Referrer
+  helmet.crossOriginOpenerPolicy({ policy: 'same-origin' }), // Изоляция контента
+  helmet.crossOriginResourcePolicy({ policy: 'same-site' }) // Политика ресурсов
+);
+// app.use(
+//   helmet.contentSecurityPolicy({
+//     directives: {
+//       defaultSrc: ["'self'"],
+//       frameAncestors: ["'self'", 'http://localhost:5173/widget/'],
+//     },
+//   }),
+// );
 
 app.use(logger('dev'));
 

@@ -1,4 +1,5 @@
 const { Assistant } = require('../../models/assistant.model');
+const uploadAvatar = require('../../helpers/uploadAvatar');
 
 const updateAssistant = async (req, res) => {
   const { id } = req.params;
@@ -15,8 +16,12 @@ const updateAssistant = async (req, res) => {
     createdAt,
     updatedAt,
     priceList,
+    avatarAssistant,
   } = req.body;
+
   try {
+    const avatarUrl = await uploadAvatar(id, avatarAssistant);
+    console.log(avatarUrl);
     const assistant = await Assistant.findOneAndReplace(
       { _id: id },
       {
@@ -32,6 +37,7 @@ const updateAssistant = async (req, res) => {
         createdAt,
         updatedAt,
         priceList,
+        avatarAssistant: avatarUrl,
       },
       { new: true, upsert: true }
     );

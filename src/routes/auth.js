@@ -79,7 +79,4 @@ router.post(
   validationMiddleware(refreshTokenSchema),
   controllerWrapper(auth.refreshToken)
 );
-
-router.post('/upload', controllerWrapper(auth.upload));
-
 module.exports = router;

@@ -9,17 +9,17 @@ const router = express.Router();
 const { validationMiddleware } = require('../middlewares');
 
 router.get('/getJs', assistants.getJs);
-router.post('/auth', controllerWrapper(assistants.authAssistant));
-router.post(
-  '/auth-user',
-  authAssistantMiddleware,
-  controllerWrapper(assistants.authUser)
-);
-router.get(
-  '/auth/current',
-  authAssistantMiddleware,
-  controllerWrapper(assistants.getCurrentAssistant)
-);
+// router.post('/auth', controllerWrapper(assistants.authAssistant));
+// router.post(
+//   '/auth-user',
+//   authAssistantMiddleware,
+//   controllerWrapper(assistants.authUser)
+// );
+// router.get(
+//   '/auth/current',
+//   authAssistantMiddleware,
+//   controllerWrapper(assistants.getCurrentAssistant)
+// );
 router.get(
   '/',
   authorizeMiddleware,

@@ -124,6 +124,11 @@ const assistantSchema = new Schema(
         email: String,
       },
     ],
+    avatarAssistant: {
+      type: String,
+      default:
+        'https://res.cloudinary.com/docbv5qdf/image/upload/v1726223818/avatarDefault_cdkxda.png',
+    },
   },
   { versionKey: false, timestamps: true }
 );

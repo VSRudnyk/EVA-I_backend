@@ -9,7 +9,6 @@ const googleAuth = require('./googleAuth');
 const getCurrent = require('./getCurrent');
 const resendEmail = require('./resendEmail');
 const verifyPassToken = require('./verifyPassToken');
-const upload = require('./upload');
 
 module.exports = {
   register,
@@ -23,5 +22,4 @@ module.exports = {
   getCurrent,
   resendEmail,
   verifyPassToken,
-  upload,
 };
