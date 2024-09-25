@@ -16,7 +16,7 @@ const refreshToken = async (req, res) => {
 
     const payload = { id, uniqueValue: Date.now() };
 
-    const accessToken = sign(payload, 'access', '1m');
+    const accessToken = sign(payload, 'access', '5m');
     const refreshToken = sign(payload, 'refresh', '5m');
 
     user.accessToken = accessToken;

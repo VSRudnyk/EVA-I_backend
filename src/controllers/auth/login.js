@@ -27,7 +27,7 @@ const login = async (req, res) => {
     uniqueValue: Date.now(),
   };
 
-  const accessToken = sign(payload, 'access', '1m');
+  const accessToken = sign(payload, 'access', '5m');
   const refreshToken = sign(payload, 'refresh', '7d');
 
   const loginedUser = await User.findByIdAndUpdate(
