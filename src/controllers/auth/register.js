@@ -41,8 +41,8 @@ const register = async (req, res) => {
     expireAt,
   });
 
-  const { password: userPassword, _id, ...userResponse } = newUser._doc;
-  const userId = _id.toString();
+  const { password: userPassword, ...userResponse } = newUser._doc;
+  const userId = newUser._doc._id.toString();
 
   try {
     await sendSmtpEmail(email, verificationCode, userId, req.url);

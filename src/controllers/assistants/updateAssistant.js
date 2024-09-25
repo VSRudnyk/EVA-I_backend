@@ -4,40 +4,29 @@ const uploadAvatar = require('../../helpers/uploadAvatar');
 const updateAssistant = async (req, res) => {
   const { id } = req.params;
   const {
-    questionAnswer,
     owner,
     tariffPlan,
-    tags,
-    address,
-    hiBye,
-    defaultSalutation,
-    pricefinder,
-    settings,
-    createdAt,
-    updatedAt,
-    priceList,
-    avatarAssistant,
+    icon,
+    color,
+    description,
+    welcomeMessage,
+    name,
+    assistantTheme,
   } = req.body;
 
   try {
-    const avatarUrl = await uploadAvatar(id, avatarAssistant);
-    console.log(avatarUrl);
+    const avatarUrl = await uploadAvatar(id, icon);
     const assistant = await Assistant.findOneAndReplace(
       { _id: id },
       {
-        questionAnswer,
         owner,
         tariffPlan,
-        tags,
-        address,
-        hiBye,
-        defaultSalutation,
-        pricefinder,
-        settings,
-        createdAt,
-        updatedAt,
-        priceList,
-        avatarAssistant: avatarUrl,
+        color,
+        description,
+        welcomeMessage,
+        name,
+        assistantTheme,
+        icon: avatarUrl,
       },
       { new: true, upsert: true }
     );
