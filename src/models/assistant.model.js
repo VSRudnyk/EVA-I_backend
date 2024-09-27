@@ -3,36 +3,46 @@ const Joi = require('joi');
 
 const assistantSchema = new Schema(
   {
-    owner: String,
+    owner: {
+      type: String,
+      required: true,
+    },
     tariffPlan: {
       type: String,
       enum: ['start', 'pro', 'max'],
       default: 'start',
+      required: true,
     },
     icon: {
       type: String,
       default: '',
+      required: true,
     },
     color: {
       type: String,
       default: '',
+      required: true,
     },
     description: {
       type: String,
       default: '',
+      required: true,
     },
     welcomeMessage: {
       type: String,
       default: '',
+      required: true,
     },
     name: {
       type: String,
       default: '',
+      required: true,
     },
     assistantTheme: {
       type: String,
       enum: ['light', 'dark'],
       default: 'light',
+      required: true,
     },
   },
   { versionKey: false, timestamps: true }

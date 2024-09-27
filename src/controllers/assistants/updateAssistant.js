@@ -1,7 +1,7 @@
 const { Assistant } = require('../../models/assistant.model');
 const uploadAvatar = require('../../helpers/uploadAvatar');
 
-const updateAssistant = async (req, res) => {
+const updateAssistant = async (req, res, next) => {
   const { id } = req.params;
   const {
     owner,
@@ -14,8 +14,20 @@ const updateAssistant = async (req, res) => {
     assistantTheme,
   } = req.body;
 
+  const assistant = await Assistant.findById(id);
+
+  const chekAssistantIcon = () => {
+    if (icon === assistant.icon) {
+      return icon;
+    } else {
+      const uploadedAvatar = uploadAvatar(id, icon);
+      return uploadedAvatar;
+    }
+  };
+
   try {
-    const avatarUrl = await uploadAvatar(id, icon);
+    const icon = await chekAssistantIcon();
+
     const assistant = await Assistant.findOneAndReplace(
       { _id: id },
       {
@@ -26,7 +38,7 @@ const updateAssistant = async (req, res) => {
         welcomeMessage,
         name,
         assistantTheme,
-        icon: avatarUrl,
+        icon,
       },
       { new: true, upsert: true }
     );
