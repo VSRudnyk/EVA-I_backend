@@ -57,7 +57,7 @@ const registerSchema = Joi.object({
     .required(),
   password: Joi.string()
     .required()
-    .pattern(/^(?=.*[A-Z])(?=.*[0-9])(?=.*[\W_])[A-Za-z0-9\W_]{8,}$/)
+    .pattern(/^(?=.*[A-Z])(?=.*[0-9])(?=.*[\W_])[A-Za-z0-9\W_]{8,16}$/)
     .message(
       'Password must contain at least 8 and not more than 16 characters, including at least 1 uppercase letter, 1 number and 1 symbol'
     ),
@@ -69,7 +69,7 @@ const loginSchema = Joi.object({
     .message('Wrong email or password')
     .required(),
   password: Joi.string()
-    .pattern(/^(?=.*[A-Z])(?=.*[0-9])(?=.*[\W_])[A-Za-z0-9\W_]{8,}$/)
+    .pattern(/^(?=.*[A-Z])(?=.*[0-9])(?=.*[\W_])[A-Za-z0-9\W_]{8,16}$/)
     .message('Wrong email or password')
     .required(),
 });
@@ -83,7 +83,7 @@ const forgotPasswordSchema = Joi.object({
 
 const resetPasswordSchema = Joi.object({
   password: Joi.string()
-    .pattern(/^(?=.*[A-Z])(?=.*[0-9])(?=.*[\W_])[A-Za-z0-9\W_]{8,}$/)
+    .pattern(/^(?=.*[A-Z])(?=.*[0-9])(?=.*[\W_])[A-Za-z0-9\W_]{8,16}$/)
     .message(
       'Password must contain at least 8 and not more than 16 characters, including at least 1 uppercase letter, 1 number and 1 symbol'
     )
