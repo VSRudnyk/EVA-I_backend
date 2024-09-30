@@ -3,7 +3,10 @@ const controllerWrapper = require('../helpers/controllerWrapper');
 const assistants = require('../controllers/assistants/index');
 const authorizeMiddleware = require('../middlewares/authorize.middleware');
 const authAssistantMiddleware = require('../middlewares/authAssistant.middleware');
-const { createAssistantSchema } = require('../models/assistant.model');
+const {
+  createAssistantSchema,
+  updateAssistantSchema,
+} = require('../models/assistant.model');
 
 const router = express.Router();
 const { validationMiddleware } = require('../middlewares');
@@ -32,6 +35,7 @@ router.get(
 );
 router.put(
   '/:id',
+  validationMiddleware(updateAssistantSchema),
   authorizeMiddleware,
   controllerWrapper(assistants.updateAssistant)
 );

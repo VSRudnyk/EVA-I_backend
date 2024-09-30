@@ -52,9 +52,21 @@ const createAssistantSchema = Joi.object({
   tariffPlan: Joi.string().required(),
 });
 
+const updateAssistantSchema = Joi.object({
+  owner: Joi.string().required(),
+  tariffPlan: Joi.string().required(),
+  icon: Joi.string().required(),
+  color: Joi.string().required(),
+  description: Joi.string().required(),
+  welcomeMessage: Joi.string().required(),
+  name: Joi.string().required(),
+  assistantTheme: Joi.string().required(),
+});
+
 const Assistant = model('assistant', assistantSchema);
 
 module.exports = {
   Assistant,
   createAssistantSchema,
+  updateAssistantSchema,
 };

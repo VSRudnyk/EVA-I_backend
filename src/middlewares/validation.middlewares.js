@@ -5,7 +5,7 @@ const validationMiddleware = (schema) => {
     const { error } = schema.validate(req.body);
 
     if (error) {
-      next(createError(401, 'Wrong email or password'));
+      next(createError(401, error.message));
     }
 
     next();
