@@ -56,7 +56,7 @@
         },
         "responses": {
           "200": {
-            "description": "Successful operation",
+            "description": "Ok",
             "content": {
               "application/json": {
                 "schema": {
@@ -65,13 +65,37 @@
               }
             }
           },
-          "400": {
-            "description": "Bad request (invalid request body)",
-            "content": {}
+          "401": {
+            "description": "Error: Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Password must contain at least 8 and not more than 16 characters, including at least 1 uppercase letter, 1 number and 1 symbol"
+                    }
+                  }
+                }
+              }
+            }
           },
           "409": {
-            "description": "This email address is already used",
-            "content": {}
+            "description": "Error: Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "This email address is already used"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -88,7 +112,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "example": "65390b342e1d57215894d967"
+              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRW1haWwiOiJ2LnJ1ZG55a0BnbWFpbC5jb20iLCJ1bmlxdWVWYWx1ZSI6MTcyNzg1ODg1NDIwMSwiaWF0IjoxNzI3ODU4ODU0LCJleHAiOjE3Mjc4NTk3NTR9.LU3meXQGM86epYDWjSpImp21ZXydHpWYGL1QdH6IOg4"
             }
           }
         ],
@@ -507,8 +531,13 @@
         "properties": {
           "_id": {
             "type": "string",
-            "description": "Session's id (needed for /auth/refresh)",
+            "description": "User's id",
             "example": "507f1f77bcf86cd799439011"
+          },
+          "name": {
+            "type": "string",
+            "description": "User name",
+            "example": "Username"
           },
           "email": {
             "type": "string",
@@ -521,29 +550,37 @@
             "example": "User"
           },
           "verify": {
-            "type": "string",
+            "type": "boolean",
             "description": "Has the user passed email verification?",
             "example": false
           },
           "verificationCode": {
             "type": "string",
             "description": "Verification code",
-            "example": "653b570223a1b329e89350de"
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRW1haWwiOiJ2LnJ1ZG55a0BnbWFpbC5jb20iLCJ1bmlxdWVWYWx1ZSI6MTcyNzg1OTQ4OTY4MiwiaWF0IjoxNzI3ODU5NDg5LCJleHAiOjE3Mjc4NjAzODl9.EWuN8WOgKqW0ObJa0tmyVImIuTK5PKCgekOmQvNNgmw"
           },
           "resetPasswordToken": {
             "type": "string",
+            "nullable": true,
             "description": "Reset password token",
-            "example": ""
+            "example": null
           },
           "accessToken": {
             "type": "string",
+            "nullable": true,
             "description": "Access token",
             "example": null
           },
           "refreshToken": {
             "type": "string",
             "description": "Refresh token",
+            "nullable": true,
             "example": null
+          },
+          "expiredAt": {
+            "type": "string",
+            "description": "Time when the user will be deleted if he has not verified his email address",
+            "example": "2024-10-02T09:13:09.686Z"
           },
           "createdAt": {
             "type": "string",
@@ -593,7 +630,7 @@
             "example": "User"
           },
           "verify": {
-            "type": "string",
+            "type": "boolean",
             "description": "Has the user passed email verification?",
             "example": true
           },
@@ -631,7 +668,7 @@
       },
       "RefreshTokensRequest": {
         "type": "object",
-        "required": true,
+        "required": ["refreshToken"],
         "properties": {
           "refreshToken": {
             "type": "string",
@@ -686,7 +723,7 @@
             "example": "User"
           },
           "verify": {
-            "type": "string",
+            "type": "boolean",
             "description": "Has the user passed email verification?",
             "example": true
           },
@@ -753,7 +790,7 @@
             "example": "User"
           },
           "verify": {
-            "type": "string",
+            "type": "boolean",
             "description": "Has the user passed email verification?",
             "example": true
           },
@@ -808,7 +845,7 @@
             "example": "User"
           },
           "verify": {
-            "type": "string",
+            "type": "boolean",
             "description": "Has the user passed email verification?",
             "example": true
           },
@@ -1130,38 +1167,56 @@
                 "type": "object",
                 "properties": {
                   "ai_disabled": {
-                    "type": "string",
+                    "type": "boolean",
                     "example": true
                   },
-                  "knowledge_enabled": { "type": "string", "example": true },
-                  "chat_history_enabled": { "type": "string", "example": true },
-                  "last_messages": { "type": "string", "example": 6 },
+                  "knowledge_enabled": {
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "chat_history_enabled": {
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "last_messages": {
+                    "type": "number",
+                    "example": 6
+                  },
                   "chat_personality": {
                     "type": "string",
                     "example": "You are personal assistant"
                   },
-                  "price_lists_enabled": { "type": "string", "example": true },
-                  "voice": { "type": "string", "example": true },
-                  "lang": { "type": "string", "example": "ua" }
+                  "price_lists_enabled": {
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "voice": {
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "lang": {
+                    "type": "string",
+                    "example": "ua"
+                  }
                 }
               },
               "answers": {
                 "type": "object",
                 "properties": {
                   "max_response_length": {
-                    "type": "string",
+                    "type": "number",
                     "example": 7
                   },
                   "max_product_show": {
-                    "type": "string",
+                    "type": "number",
                     "example": 4
                   },
                   "temperature_of_answers": {
-                    "type": "string",
+                    "type": "number",
                     "example": 1
                   },
                   "max_responses": {
-                    "type": "string",
+                    "type": "number",
                     "example": 20
                   }
                 }

@@ -47,7 +47,12 @@ app.use(logger('dev'));
 // };
 // app.use(cors(corsOptions));
 
-const allowedOrigins = ['https://eva-i.com', 'http://localhost:5173'];
+const allowedOrigins = [
+  'https://eva-i.com',
+  'http://localhost:5173',
+  'http://localhost:3000',
+  'https://eva-i-backend.vercel.app/',
+];
 
 const corsOptions = {
   origin: function (origin, callback) {

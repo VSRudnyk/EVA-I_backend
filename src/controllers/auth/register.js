@@ -8,7 +8,7 @@ const register = async (req, res) => {
   const { email, password, name } = req.body;
   const user = await User.findOne({ email });
 
-  if (user && user.verify) {
+  if ((user && user.verify) || (user && !user.verify)) {
     const error = createError(409, 'This email address is already used');
     throw error;
   }
