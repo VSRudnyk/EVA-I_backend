@@ -5,8 +5,6 @@
     "title": "EVA-I",
     "description": "EVA-I API Docs"
   },
-  "consumes": ["text/html"],
-  "produces": ["text/html"],
   "servers": [
     {
       "url": "https://eva-i-backend.vercel.app/api/"
