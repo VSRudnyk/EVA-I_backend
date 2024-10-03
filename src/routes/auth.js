@@ -14,6 +14,7 @@ const {
   resetPasswordSchema,
   refreshTokenSchema,
   resendEmailSchema,
+  updateTariffPlanSchema,
 } = require('../models/users.model');
 
 router.post(
@@ -52,10 +53,7 @@ router.post(
   controllerWrapper(auth.resendEmail)
 );
 
-router.get(
-  '/verify/:id/:verificationCode',
-  controllerWrapper(auth.verifyEmail)
-);
+router.get('/verify/:verificationCode', controllerWrapper(auth.verifyEmail));
 
 router.get(
   '/verify-token/:resetPasswordToken',
@@ -79,4 +77,12 @@ router.post(
   validationMiddleware(refreshTokenSchema),
   controllerWrapper(auth.refreshToken)
 );
+
+router.post(
+  '/update-tariff-plan',
+  authorizeMiddleware,
+  validationMiddleware(updateTariffPlanSchema),
+  controllerWrapper(auth.updateTariffPlan)
+);
+
 module.exports = router;

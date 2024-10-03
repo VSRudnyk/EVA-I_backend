@@ -2,7 +2,7 @@ const express = require('express');
 const controllerWrapper = require('../helpers/controllerWrapper');
 const assistants = require('../controllers/assistants/index');
 const authorizeMiddleware = require('../middlewares/authorize.middleware');
-const authAssistantMiddleware = require('../middlewares/authAssistant.middleware');
+// const authAssistantMiddleware = require('../middlewares/authAssistant.middleware');
 const {
   createAssistantSchema,
   updateAssistantSchema,

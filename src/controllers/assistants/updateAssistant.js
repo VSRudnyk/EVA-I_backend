@@ -3,23 +3,15 @@ const uploadAvatar = require('../../helpers/uploadAvatar');
 
 const updateAssistant = async (req, res, next) => {
   const { id } = req.params;
-  const {
-    owner,
-    tariffPlan,
-    icon,
-    color,
-    description,
-    welcomeMessage,
-    name,
-    assistantTheme,
-  } = req.body;
+  const { icon, color, description, welcomeMessage, name, assistantTheme } =
+    req.body;
 
   const assistant = await Assistant.findById(id);
 
   const chekAssistantIcon = () => {
     if (icon === assistant.icon) {
       return icon;
-    } else {
+    } else if (icon !== undefined) {
       const uploadedAvatar = uploadAvatar(id, icon);
       return uploadedAvatar;
     }
@@ -28,17 +20,15 @@ const updateAssistant = async (req, res, next) => {
   try {
     const icon = await chekAssistantIcon();
 
-    const assistant = await Assistant.findOneAndReplace(
+    const assistant = await Assistant.findByIdAndUpdate(
       { _id: id },
       {
-        owner,
-        tariffPlan,
+        icon,
         color,
         description,
         welcomeMessage,
         name,
         assistantTheme,
-        icon,
       },
       { new: true, upsert: true }
     );

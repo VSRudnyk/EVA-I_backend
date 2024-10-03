@@ -9,6 +9,7 @@ const googleAuth = require('./googleAuth');
 const getCurrent = require('./getCurrent');
 const resendEmail = require('./resendEmail');
 const verifyPassToken = require('./verifyPassToken');
+const updateTariffPlan = require('./updateTariffPlan');
 
 module.exports = {
   register,
@@ -22,4 +23,5 @@ module.exports = {
   getCurrent,
   resendEmail,
   verifyPassToken,
+  updateTariffPlan,
 };

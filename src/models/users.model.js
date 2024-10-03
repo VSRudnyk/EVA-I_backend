@@ -22,6 +22,12 @@ const userSchema = new Schema(
       enum: ['Admin', 'User'],
       default: 'User',
     },
+    tariffPlan: {
+      type: String,
+      enum: [null, 'free', 'standart', 'pro', 'enterprise'],
+      default: null,
+      required: false,
+    },
     verify: {
       type: Boolean,
       default: false,
@@ -102,6 +108,10 @@ const resendEmailSchema = Joi.object({
   action: Joi.string().optional(),
 });
 
+const updateTariffPlanSchema = Joi.object({
+  tariffPlan: Joi.string().required(),
+});
+
 const User = model('user', userSchema);
 
 User.collection.createIndex(
@@ -117,4 +127,5 @@ module.exports = {
   resetPasswordSchema,
   refreshTokenSchema,
   resendEmailSchema,
+  updateTariffPlanSchema,
 };

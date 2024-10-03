@@ -17,7 +17,7 @@ const nodemailConfig = {
 };
 
 const transporter = nodemailer.createTransport(nodemailConfig);
-const sendSmtpEmail = async (email, token, userId, path) => {
+const sendSmtpEmail = async (email, token, path) => {
   const chosePath = (path) => {
     if (path === '/forgot-password' || path === '/reset-password') {
       return true;
@@ -41,7 +41,7 @@ const sendSmtpEmail = async (email, token, userId, path) => {
     email,
     subject: 'Confirm your email address',
     text: 'Click on the link in this email to confirm your email address',
-    link: `${BACK_URL}/api/auth/verify/${userId}/${token}`,
+    link: `${BACK_URL}/api/auth/verify/${token}`,
     textLink: 'Confirm email address',
     salutationText: 'Hi, thank you for creating an account!',
     actionText:

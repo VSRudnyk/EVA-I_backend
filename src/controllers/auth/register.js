@@ -42,10 +42,9 @@ const register = async (req, res) => {
   });
 
   const { password: userPassword, ...userResponse } = newUser._doc;
-  const userId = newUser._doc._id.toString();
 
   try {
-    await sendSmtpEmail(email, verificationCode, userId, req.url);
+    await sendSmtpEmail(email, verificationCode, req.url);
     res.status(200).json(userResponse);
   } catch (error) {
     res.status(error.status).json({ message: error.message });
