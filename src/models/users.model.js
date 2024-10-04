@@ -63,9 +63,11 @@ const registerSchema = Joi.object({
     .required(),
   password: Joi.string()
     .required()
-    .pattern(/^(?=.*[A-Z])(?=.*[0-9])(?=.*[\W_])[A-Za-z0-9\W_]{8,16}$/)
+    .pattern(
+      /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-])[a-zA-Z0-9!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]{8,16}$/
+    )
     .message(
-      'Password must contain at least 8 and not more than 16 characters, including at least 1 uppercase letter, 1 number and 1 symbol'
+      'Password must contain at least 8 and not more than 16 characters, including only latin letters, at least 1 uppercase letter, 1 number and 1 symbol'
     ),
   name: Joi.string().optional(),
 });
@@ -75,7 +77,9 @@ const loginSchema = Joi.object({
     .message('Wrong email or password')
     .required(),
   password: Joi.string()
-    .pattern(/^(?=.*[A-Z])(?=.*[0-9])(?=.*[\W_])[A-Za-z0-9\W_]{8,16}$/)
+    .pattern(
+      /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-])[a-zA-Z0-9!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]{8,16}$/
+    )
     .message('Wrong email or password')
     .required(),
 });

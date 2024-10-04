@@ -12,7 +12,7 @@ const verifyEmail = async (req, res) => {
 
   const isTokenExpired = verify(verificationCode, 'access');
   if (!isTokenExpired || !user) {
-    return res.redirect(`${FRONT_URL}/verification?isTokenExpired=true`);
+    return res.redirect(302, `${FRONT_URL}/verification?isTokenExpired=true`);
   }
 
   // if (!user) {
@@ -22,7 +22,7 @@ const verifyEmail = async (req, res) => {
   //   );
   // }
   else if (user.verify) {
-    return res.redirect(`${FRONT_URL}/verification?verified=true`);
+    return res.redirect(302, `${FRONT_URL}/verification?verified=true`);
   }
 
   await User.findByIdAndUpdate(user._id, {
@@ -30,7 +30,7 @@ const verifyEmail = async (req, res) => {
     verificationCode: null,
   });
 
-  return res.redirect(`${FRONT_URL}/verification?verify=true`);
+  return res.redirect(302, `${FRONT_URL}/verification?verify=true`);
 };
 
 module.exports = verifyEmail;
