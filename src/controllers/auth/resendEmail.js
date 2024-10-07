@@ -43,7 +43,7 @@ const resendEmail = async (req, res) => {
   const userId = _id.toString();
 
   try {
-    await sendSmtpEmail(email, token, userId, action);
+    await sendSmtpEmail(email, token, action);
     res.status(200).json(userResponse);
   } catch (error) {
     res.status(error.status).json({ message: error.message });
