@@ -36,7 +36,7 @@ router.get(
 router.put(
   '/:id',
   validationMiddleware(updateAssistantSchema),
-  // authorizeMiddleware,
+  authorizeMiddleware,
   controllerWrapper(assistants.updateAssistant)
 );
 router.delete(
@@ -47,7 +47,7 @@ router.delete(
 router.post(
   '/add',
   validationMiddleware(createAssistantSchema),
-  // authorizeMiddleware,
+  authorizeMiddleware,
   controllerWrapper(assistants.createAssistant)
 );
 
