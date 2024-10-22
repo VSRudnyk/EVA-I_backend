@@ -4,8 +4,9 @@ const mobileView = width < 1000;
 const getData = () => {
   var iframe = document.createElement('iframe');
   iframe.src = `https://eva-i.com/widget/`; // Нужно будет сделать что бы на виджет отправлять не id а токен
-  iframe.style.width = '100px';
-  iframe.style.height = '100px';
+  // iframe.src = `http://localhost:5173/widget_v2/`; // Нужно будет сделать что бы на виджет отправлять не id а токен
+  iframe.style.width = '255px';
+  iframe.style.height = '180px';
   iframe.style.position = 'fixed';
   iframe.style.right = '20px';
   iframe.style.bottom = '20px';
@@ -24,16 +25,27 @@ const getData = () => {
 
   window.addEventListener('message', function (event) {
     if (event.data === 'toggleResize') {
-      if (iframe.style.width === '100px' && iframe.style.height === '100px') {
+      if (iframe.style.width === '255px' && iframe.style.height === '180px') {
         resizeIframe(
           mobileView ? '100%' : '410px',
           mobileView ? '100%' : '80%'
         );
       } else {
         setTimeout(function () {
-          resizeIframe('100px', '100px');
+          resizeIframe('255px', '180px');
         }, 1000);
       }
+    }
+  });
+
+  window.addEventListener('message', function (event) {
+    if (event.data === 'getDimensions') {
+      event.source.postMessage(
+        {
+          width: window.innerWidth,
+        },
+        '*'
+      );
     }
   });
 
