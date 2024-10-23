@@ -3,8 +3,8 @@ const mobileView = width < 1000;
 
 const getData = () => {
   var iframe = document.createElement('iframe');
-  iframe.src = `https://eva-i.com/widget/`; // Нужно будет сделать что бы на виджет отправлять не id а токен
-  // iframe.src = `http://localhost:5173/widget_v2/`; // Нужно будет сделать что бы на виджет отправлять не id а токен
+  // iframe.src = `https://eva-i.com/widget/`; // Нужно будет сделать что бы на виджет отправлять не id а токен
+  iframe.src = `http://localhost:5173/widget_v2/`; // Нужно будет сделать что бы на виджет отправлять не id а токен
   iframe.style.width = '255px';
   iframe.style.height = '180px';
   iframe.style.position = 'fixed';
@@ -25,16 +25,18 @@ const getData = () => {
 
   window.addEventListener('message', function (event) {
     if (event.data === 'toggleResize') {
-      if (iframe.style.width === '255px' && iframe.style.height === '180px') {
+      if ((iframe.style.width === '255px' || iframe.style.width === '100px')  && (iframe.style.height === '180px' || iframe.style.height === '100px')) {
         resizeIframe(
           mobileView ? '100%' : '410px',
           mobileView ? '100%' : '80%'
         );
       } else {
         setTimeout(function () {
-          resizeIframe('255px', '180px');
+          resizeIframe('100px', '100px');
         }, 1000);
       }
+    } else if (event.data === 'closePopover') {
+      resizeIframe('100px', '100px')
     }
   });
 
