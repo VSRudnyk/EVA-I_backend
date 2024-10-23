@@ -3,8 +3,8 @@ const mobileView = width < 1000;
 
 const getData = () => {
   var iframe = document.createElement('iframe');
-  // iframe.src = `https://eva-i.com/widget/`; // Нужно будет сделать что бы на виджет отправлять не id а токен
-  iframe.src = `http://localhost:5173/widget_v2/`; // Нужно будет сделать что бы на виджет отправлять не id а токен
+  iframe.src = `https://eva-i.com/widget/`; // Нужно будет сделать что бы на виджет отправлять не id а токен
+  // iframe.src = `http://localhost:5173/widget_v2/`; // Нужно будет сделать что бы на виджет отправлять не id а токен
   iframe.style.width = '255px';
   iframe.style.height = '180px';
   iframe.style.position = 'fixed';
