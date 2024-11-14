@@ -122,7 +122,10 @@ const User = model('user', userSchema);
 
 User.collection.createIndex(
   { expireAt: 1 },
-  { expireAfterSeconds: 0, partialFilterExpression: { verify: false } }
+  {
+    expireAfterSeconds: 0,
+    partialFilterExpression: { verify: false },
+  }
 );
 
 module.exports = {

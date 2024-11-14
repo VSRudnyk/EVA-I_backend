@@ -18,7 +18,6 @@ const verify = (token, secret_key) => {
     );
   } catch (error) {
     return null;
-    // throw error;
   }
 };
 

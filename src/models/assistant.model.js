@@ -9,6 +9,9 @@ const assistantSchema = new Schema(
     icon: {
       type: String,
     },
+    iconId: {
+      type: String,
+    },
     color: {
       type: String,
     },
