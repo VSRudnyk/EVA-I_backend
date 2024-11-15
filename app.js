@@ -68,7 +68,7 @@ app.use(logger('dev'));
 //   allowedHeaders: 'Content-Type, Authorization',
 // };
 
-// app.use(cors(corsOptions));
+app.use(cors());
 
 // END
 
