@@ -18,28 +18,27 @@ const app = express();
 app.use(
   helmet.contentSecurityPolicy({
     directives: {
-      defaultSrc: ["'self'"], // Только с того же источника
-      frameAncestors: ["'self'", 'https://evatest-2aebdf1ed009.herokuapp.com'], // Только с определенных источников
-      scriptSrc: ["'self'", "'unsafe-inline'"], // Пример настройки для скриптов
-      objectSrc: ["'none'"], // Запрещает загрузку объектов (например, flash)
-      upgradeInsecureRequests: [], // Принудительно использует HTTPS для всех ресурсов
+      defaultSrc: ["'self'"], // Only from the same source
+      frameAncestors: ["'self'", 'https://evatest-2aebdf1ed009.herokuapp.com'], // Only from certain sources
+      scriptSrc: ["'self'", "'unsafe-inline'"], // Example of setup for scripts
+      objectSrc: ["'none'"], // Prevents loading of objects (eg flash)
+      upgradeInsecureRequests: [], // Forces HTTPS for all resources
     },
   }),
-  helmet.noSniff(), // Защита от MIME атак
-  helmet.referrerPolicy({ policy: 'no-referrer' }) // Политика Referrer
-  // helmet.crossOriginOpenerPolicy({ policy: 'same-origin' }), // Изоляция контента
-  // helmet.crossOriginResourcePolicy({ policy: 'same-site' }) // Политика ресурсов
+  helmet.noSniff(), // Protection against MIME attacks
+  helmet.referrerPolicy({ policy: 'no-referrer' }) // Referrer Policy
+
+  // START ----------------- settings that work if the backend and frontend are on the same resource -----------------
+
+  // helmet.crossOriginOpenerPolicy({ policy: 'same-origin' }), // Content Isolation
+  // helmet.crossOriginResourcePolicy({ policy: 'same-site' }) // Resource Policy
+
+  // END
 );
-// app.use(
-//   helmet.contentSecurityPolicy({
-//     directives: {
-//       defaultSrc: ["'self'"],
-//       frameAncestors: ["'self'", 'http://localhost:5173/widget/'],
-//     },
-//   }),
-// );
 
 app.use(logger('dev'));
+
+// START ----------------- must be enabled before release if backend is located on eva-i.com -----------------
 
 // const corsOptions = {
 //   origin: 'https://eva-i.com',
@@ -47,26 +46,31 @@ app.use(logger('dev'));
 // };
 // app.use(cors(corsOptions));
 
-const allowedOrigins = [
-  'https://eva-i.com',
-  'http://localhost:5173',
-  'http://localhost:3000',
-  'https://eva-i-backend.vercel.app/',
-];
+// END
 
-const corsOptions = {
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-  allowedHeaders: 'Content-Type, Authorization',
-};
+// START ----------------- must be enabled before release if the backend is NOT located on eva-i.com -----------------
+// const allowedOrigins = [
+//   'https://eva-i.com',
+//   'http://localhost:5173',
+//   'http://localhost:3000',
+//   'https://eva-i-backend.vercel.app/',
+// ];
 
-app.use(cors(corsOptions));
+// const corsOptions = {
+//   origin: function (origin, callback) {
+//     if (!origin || allowedOrigins.includes(origin)) {
+//       callback(null, true);
+//     } else {
+//       callback(new Error('Not allowed by CORS'));
+//     }
+//   },
+//   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+//   allowedHeaders: 'Content-Type, Authorization',
+// };
+
+// app.use(cors(corsOptions));
+
+// END
 
 app.use(express.json());
 app.use(
