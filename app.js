@@ -11,6 +11,15 @@ const authRouter = require('./src/routes/auth');
 const waitListRouter = require('./src/routes/waitList');
 const assistantsRouter = require('./src/routes/assistants');
 const { errorFilter } = require('./src/middlewares');
+const { rateLimit } = require('express-rate-limit');
+
+const limiter = rateLimit({
+  windowMs: 5 * 60 * 1000, // 5 minutes
+  limit: 10, // each IP can make up to 10 requests per `windowsMs` (5 minutes)
+  standardHeaders: true, // add the `RateLimit-*` headers to the response
+  legacyHeaders: false, // remove the `X-RateLimit-*` headers from the response
+  skipSuccessfulRequests: true, // to avoid counting successful requests in limit
+});
 
 const SECRET_SESSION_KEY = process.env.SECRET_SESSION_KEY;
 
@@ -84,7 +93,7 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use('/api/auth', authRouter);
+app.use('/api/auth', limiter, authRouter);
 app.use('/api/waitlist', waitListRouter);
 app.use('/api/assistants', assistantsRouter);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
