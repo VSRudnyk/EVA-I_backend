@@ -14,7 +14,7 @@ const getData = () => {
   iframe.style.overscrollBehaviorY = 'hidden';
   iframe.style.bottom = mobileView ? '0' : '20px';
   iframe.style.right = mobileView ? '0' : '20px';
-  iframe.style.zIndex = '999';
+  iframe.style.zIndex = '99';
   iframe.style.borderRadius = mobileView ? '0' : '16px';
   iframe.scrolling = 'no';
 
@@ -25,18 +25,23 @@ const getData = () => {
 
   window.addEventListener('message', function (event) {
     if (event.data === 'toggleResize') {
-      if ((iframe.style.width === '255px' || iframe.style.width === '100px')  && (iframe.style.height === '180px' || iframe.style.height === '100px')) {
+      if (
+        (iframe.style.width === '255px' || iframe.style.width === '100px') &&
+        (iframe.style.height === '180px' || iframe.style.height === '100px')
+      ) {
         resizeIframe(
           mobileView ? '100%' : '410px',
           mobileView ? '100%' : '80%'
         );
+        iframe.style.zIndex = '999';
       } else {
         setTimeout(function () {
           resizeIframe('100px', '100px');
         }, 1000);
+        iframe.style.zIndex = '99';
       }
     } else if (event.data === 'closePopover') {
-      resizeIframe('100px', '100px')
+      resizeIframe('100px', '100px');
     }
   });
 
