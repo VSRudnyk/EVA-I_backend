@@ -4,9 +4,8 @@ var ip = require('ip');
 
 const { DB_URI } = process.env;
 
-var keyGenerator = function (req /*, res*/) {
-  console.log('req.ip ------------------------->', req.ip);
-  return req.ip; // or whatever we end up with
+var keyGenerator = function (req) {
+  return req.ip;
 };
 
 const limiter = rateLimit({

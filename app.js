@@ -16,7 +16,7 @@ const limiter = require('./src/helpers/expressRateLimit');
 const { SECRET_SESSION_KEY } = process.env;
 
 const app = express();
-// app.set('trust proxy', 1);
+app.set('trust proxy', 1);
 app.get('/ip', (request, response) => response.send(request.ip));
 
 app.use(
