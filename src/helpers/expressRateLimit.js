@@ -3,6 +3,11 @@ const MongoStore = require('rate-limit-mongo');
 
 const { DB_URI } = process.env;
 
+var keyGenerator = function (req /*, res*/) {
+  console.log('Public Id --------->', req.publicIp);
+  return req.publicIp; // or whatever we end up with
+};
+
 const limiter = rateLimit({
   store: new MongoStore({
     uri: DB_URI,
@@ -15,6 +20,7 @@ const limiter = rateLimit({
   skipSuccessfulRequests: true, // to avoid counting successful requests in limit
   legacyHeaders: false,
   standardHeaders: false,
+  keyGenerator: keyGenerator,
 });
 
 module.exports = limiter;
