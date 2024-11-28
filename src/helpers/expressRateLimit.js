@@ -13,6 +13,8 @@ const limiter = rateLimit({
   standardHeaders: true, // add the `RateLimit-*` headers to the response
   legacyHeaders: false, // remove the `X-RateLimit-*` headers from the response
   skipSuccessfulRequests: true, // to avoid counting successful requests in limit
+  legacyHeaders: false,
+  standardHeaders: false,
 });
 
 module.exports = limiter;
