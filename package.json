@@ -22,6 +22,7 @@
     "express-rate-limit": "^7.4.1",
     "express-session": "^1.17.3",
     "helmet": "^7.1.0",
+    "ip": "^2.0.1",
     "joi": "^17.8.4",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^7.0.2",

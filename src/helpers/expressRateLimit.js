@@ -1,11 +1,12 @@
 const { rateLimit } = require('express-rate-limit');
 const MongoStore = require('rate-limit-mongo');
+var ip = require('ip');
 
 const { DB_URI } = process.env;
 
 var keyGenerator = function (req /*, res*/) {
-  console.log('Public Id --------->', req.publicIp);
-  return req.publicIp; // or whatever we end up with
+  console.log('req.ip ------------------------->', req.ip);
+  return req.ip; // or whatever we end up with
 };
 
 const limiter = rateLimit({
