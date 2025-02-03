@@ -29,6 +29,11 @@ const assistantSchema = new Schema(
       enum: ['light', 'dark'],
       default: 'light',
     },
+    language: {
+      type: String,
+      enum: ['en', 'ua'],
+      default: 'en',
+    },
   },
   { versionKey: false, timestamps: true }
 );

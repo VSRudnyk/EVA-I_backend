@@ -1,10 +1,9 @@
 const { rateLimit } = require('express-rate-limit');
 const MongoStore = require('rate-limit-mongo');
-var ip = require('ip');
 
 const { DB_URI } = process.env;
 
-var keyGenerator = function (req) {
+const keyGenerator = function (req) {
   return req.ip;
 };
 

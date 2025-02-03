@@ -63,7 +63,7 @@ const sendSmtpEmail = async (email, token, path) => {
         <tr>
           <td rowspan="2" style="width: 40px; height: 40px; padding: 0">
             <img
-              src="https://i.ibb.co/q71QFCR/logo.png"
+              src="https://eva-i.com/assets/Logo-c2eed9e8.svg"
               alt="EVA-I Logo"
               width="40"
               height="40"

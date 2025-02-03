@@ -12,7 +12,15 @@ const userSchema = new Schema(
     },
     password: {
       type: String,
-      required: false,
+      required: function () {
+        return this.authType === 'local';
+      },
+    },
+    authType: {
+      type: String,
+      required: true,
+      enum: ['local', 'google'],
+      default: 'local',
     },
     avatar: {
       type: String,

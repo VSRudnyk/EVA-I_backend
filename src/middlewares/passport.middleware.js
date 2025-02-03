@@ -1,8 +1,5 @@
 const passport = require('passport');
 const { Strategy } = require('passport-google-oauth2');
-const bcrypt = require('bcryptjs');
-const { v4: uuidv4 } = require('uuid');
-
 const { User } = require('../models/users.model');
 
 const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_CALLBACK_URL } =
@@ -28,11 +25,10 @@ const googleCallback = async (
     if (user) {
       return done(null, user);
     }
-    const hashPassword = await bcrypt.hash(uuidv4(), 10);
     const newUser = await User.create({
       email,
+      authType: 'google',
       name: displayName,
-      password: hashPassword,
     });
     done(null, newUser);
   } catch (error) {
