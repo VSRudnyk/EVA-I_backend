@@ -4,8 +4,18 @@ const { User } = require('../../models/users.model');
 const { FRONT_LOCAL_URL, FRONT_URL } = process.env;
 
 const googleAuth = async (req, res) => {
-  const { _id: id } = req.user;
+  const user = req.user;
 
+  if (user.fromGoogle) {
+    return res.json({
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      // Add any other needed data
+    });
+  }
+
+  const { _id: id } = user;
   const payload = {
     id,
     uniqueValue: Date.now(),

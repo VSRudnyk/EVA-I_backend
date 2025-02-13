@@ -30,12 +30,13 @@ router.post(
 
 router.get('/logout', authorizeMiddleware, controllerWrapper(auth.logout));
 
-router.get(
-  '/google',
+router.get('/google', (req, res, next) => {
+  const referer = req.get('Referer') || '';
   passport.authenticate('google', {
     scope: ['email', 'profile'],
-  })
-);
+    state: referer, // Pass referer in state parameter
+  })(req, res, next);
+});
 
 router.get(
   '/google/callback',

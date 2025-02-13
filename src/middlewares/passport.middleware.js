@@ -20,7 +20,19 @@ const googleCallback = async (
   done
 ) => {
   try {
-    const { email, displayName } = profile;
+    const { id, email, displayName } = profile;
+    const state = req.query.state || '';
+
+    if (state.includes('https://revelint.io/widget')) {
+      return done(null, {
+        email,
+        id,
+        name: displayName,
+        fromGoogle: true,
+        // Add any other needed profile data
+      });
+    }
+
     const user = await User.findOne({ email });
     if (user) {
       return done(null, user);
