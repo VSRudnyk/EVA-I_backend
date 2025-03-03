@@ -128,13 +128,13 @@ const updateTariffPlanSchema = Joi.object({
 
 const User = model('user', userSchema);
 
-User.collection.createIndex(
-  { expireAt: 1 },
-  {
-    expireAfterSeconds: 0,
-    partialFilterExpression: { verify: false },
-  }
-);
+// User.collection.createIndex(
+//   { expireAt: 1 },
+//   {
+//     expireAfterSeconds: 0,
+//     partialFilterExpression: { verify: false },
+//   }
+// );
 
 module.exports = {
   User,

@@ -1,0 +1,35 @@
+services:
+  mongodb:
+    image: 'mongo:4.4.6'
+    volumes:
+      - eva-mongo-data:/data/db
+    ports:
+      - '27017:27017'
+    environment:
+      MONGO_URI: mongodb://mongodb:27017/eva_back_dev
+
+  eva-backend:
+    build: ./
+    ports:
+      - 3000:3000
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    env_file:
+      - .env.development
+    depends_on:
+      - mongodb
+
+  # goals-frontend:
+  #   build: ./frontend
+  #   ports:
+  #     - '3001:3000' # Changed to avoid conflict
+  #   volumes:
+  #     - ./frontend/src:/app/src
+  #   stdin_open: true
+  #   tty: true
+  #   depends_on:
+  #     - eva-backend # Changed to correct dependency
+
+volumes:
+  eva-mongo-data: # Corrected volume name
