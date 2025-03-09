@@ -5,8 +5,8 @@ services:
       - eva-mongo-data:/data/db
     ports:
       - '27017:27017'
-    environment:
-      MONGO_URI: mongodb://mongodb:27017/eva_back_dev
+    env_file:
+      - .env.development
 
   eva-backend:
     build: ./

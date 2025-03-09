@@ -1,15 +1,21 @@
 const { default: mongoose } = require('mongoose');
 const app = require('./app');
 
-const { DB_URI, PORT } = process.env;
+const { DB_URI, PORT, NODE_ENV, DB_URI_DOCKER_DEV } = process.env;
 
 const startServer = async () => {
   try {
-    // await mongoose.connect(DB_URI);
-    await mongoose.connect(process.env.MONGO_URI),
-      app.listen(PORT || 3000, () =>
-        console.log(`Database connection successful in port ${PORT}`)
-      );
+    if (NODE_ENV === 'development') {
+      await mongoose.connect(DB_URI_DOCKER_DEV, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      });
+    } else if (NODE_ENV === 'production') {
+      await mongoose.connect(DB_URI);
+    }
+    app.listen(PORT || 3000, () =>
+      console.log(`${NODE_ENV} database connection successful in port ${PORT}`)
+    );
   } catch (error) {
     console.log(error.message);
     process.exit(1);
