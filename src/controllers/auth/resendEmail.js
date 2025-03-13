@@ -39,8 +39,7 @@ const resendEmail = async (req, res) => {
     throw error;
   }
 
-  const { password: userPassword, _id, ...userResponse } = updatedUser._doc;
-  const userId = _id.toString();
+  const { password: userPassword, ...userResponse } = updatedUser._doc;
 
   try {
     await sendSmtpEmail(email, token, action);

@@ -13,15 +13,7 @@ const verifyEmail = async (req, res) => {
   const isTokenExpired = verify(verificationCode, 'access');
   if (!isTokenExpired || !user) {
     return res.redirect(302, `${FRONT_URL}/verification?isTokenExpired=true`);
-  }
-
-  // if (!user) {
-  //   throw createError(
-  //     401,
-  //     'Sorry, can’t find an account associated with this address'
-  //   );
-  // }
-  else if (user.verify) {
+  } else if (user.verify) {
     return res.redirect(302, `${FRONT_URL}/verification?verified=true`);
   }
 
