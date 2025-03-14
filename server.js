@@ -1,15 +1,24 @@
 const { default: mongoose } = require('mongoose');
 const app = require('./app');
 
-const { DB_URI, PORT, NODE_ENV, DB_URI_DOCKER_DEV } = process.env;
+const {
+  DB_URI,
+  PORT,
+  NODE_ENV,
+  MONGO_INITDB_ROOT_USERNAME,
+  MONGO_INITDB_ROOT_PASSWORD,
+} = process.env;
 
 const startServer = async () => {
   try {
     if (NODE_ENV === 'development') {
-      await mongoose.connect(DB_URI_DOCKER_DEV, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-      });
+      await mongoose.connect(
+        `mongodb://${process.env.MONGO_INITDB_ROOT_USERNAME}:${process.env.MONGO_INITDB_ROOT_PASSWORD}@mongodb:27017/eva-backend?authSource=admin`,
+        {
+          useNewUrlParser: true,
+          useUnifiedTopology: true,
+        }
+      );
     } else if (NODE_ENV === 'production') {
       await mongoose.connect(DB_URI);
     }
