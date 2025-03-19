@@ -1,7 +1,8 @@
 const { sign } = require('../../helpers');
 const { User } = require('../../models/users.model');
 
-const { FRONT_LOCAL_URL, FRONT_URL } = process.env;
+const { FRONT_LOCAL_URL, FRONT_URL, NODE_ENV } = process.env;
+const dev_mode = NODE_ENV === 'development'
 
 const googleAuth = async (req, res) => {
   const user = req.user;
@@ -30,7 +31,7 @@ const googleAuth = async (req, res) => {
   });
   res.redirect(
     // `${FRONT_LOCAL_URL}?accessToken=${accessToken}&refreshToken=${refreshToken}`
-    `${FRONT_URL}/wait-list`
+    `${dev_mode ? FRONT_LOCAL_URL :FRONT_URL}/wait-list`
   );
 };
 

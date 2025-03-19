@@ -3,7 +3,8 @@ const { verify } = require('../../helpers');
 const { createError } = require('../../helpers');
 const { User } = require('../../models/users.model');
 
-const { FRONT_URL, FRONT_LOCAL_URL } = process.env;
+const { FRONT_URL, FRONT_LOCAL_URL, NODE_ENV } = process.env;
+const dev_mode = NODE_ENV === 'development'
 
 const verifyEmail = async (req, res) => {
   const { verificationCode } = req.params;
@@ -12,7 +13,7 @@ const verifyEmail = async (req, res) => {
 
   const isTokenExpired = verify(verificationCode, 'access');
   if (!isTokenExpired || !user) {
-    return res.redirect(302, `${FRONT_URL}/verification?isTokenExpired=true`);
+    return res.redirect(302, `${dev_mode ? FRONT_LOCAL_URL :FRONT_URL}/verification?isTokenExpired=true`);
   }
 
   // if (!user) {
@@ -22,7 +23,7 @@ const verifyEmail = async (req, res) => {
   //   );
   // }
   else if (user.verify) {
-    return res.redirect(302, `${FRONT_URL}/verification?verified=true`);
+    return res.redirect(302, `${dev_mode ? FRONT_LOCAL_URL :FRONT_URL}/verification?verified=true`);
   }
 
   await User.findByIdAndUpdate(user._id, {
@@ -30,7 +31,7 @@ const verifyEmail = async (req, res) => {
     verificationCode: null,
   });
 
-  return res.redirect(302, `${FRONT_URL}/verification?verify=true`);
+  return res.redirect(302, `${dev_mode ? FRONT_LOCAL_URL :FRONT_URL}/verification?verify=true`);
 };
 
 module.exports = verifyEmail;

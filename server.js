@@ -4,9 +4,7 @@ const app = require('./app');
 const {
   DB_URI,
   PORT,
-  NODE_ENV,
-  MONGO_INITDB_ROOT_USERNAME,
-  MONGO_INITDB_ROOT_PASSWORD,
+  NODE_ENV
 } = process.env;
 
 const startServer = async () => {

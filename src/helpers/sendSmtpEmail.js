@@ -1,6 +1,7 @@
 const nodemailer = require('nodemailer');
-const { NODEMAILER_PASSWORD, NODEMAILER_EMAIL, BACK_URL, BACK_LOCAL_URL } =
+const { NODEMAILER_PASSWORD, NODEMAILER_EMAIL, BACK_URL, BACK_LOCAL_URL, NODE_ENV } =
   process.env;
+const dev_mode = NODE_ENV === 'development'
 
 const nodemailConfig = {
   host: 'smtp.ukr.net',
@@ -29,7 +30,7 @@ const sendSmtpEmail = async (email, token, path) => {
     email,
     subject: 'Request to reset your EVA-I password',
     text: 'Click on the link in this email to enter a new password',
-    link: `${BACK_URL}/api/auth/verify-token/${token}`,
+    link: `${dev_mode ? BACK_LOCAL_URL: BACK_URL}/api/auth/verify-token/${token}`,
     textLink: 'Reset your password',
     salutationText:
       'Hi, we’ve received a request to reset your EVA-I password.',
@@ -41,7 +42,7 @@ const sendSmtpEmail = async (email, token, path) => {
     email,
     subject: 'Confirm your email address',
     text: 'Click on the link in this email to confirm your email address',
-    link: `${BACK_URL}/api/auth/verify/${token}`,
+    link: `${dev_mode ? BACK_LOCAL_URL: BACK_URL}/api/auth/verify/${token}`,
     textLink: 'Confirm email address',
     salutationText: 'Hi, thank you for creating an account!',
     actionText:
