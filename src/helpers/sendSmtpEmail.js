@@ -1,22 +1,9 @@
 const nodemailer = require('nodemailer');
-const { NODEMAILER_PASSWORD, NODEMAILER_EMAIL, BACK_URL, BACK_LOCAL_URL } =
-  process.env;
+const sgMail = require('@sendgrid/mail')
+const { BACK_URL, BACK_LOCAL_URL, SENDGRID_API_KEY, PROJECT_EMAIL } =  process.env;
 
-const nodemailConfig = {
-  host: 'smtp.ukr.net',
-  port: 465,
-  secure: true,
-  logger: true,
-  // debug: true,
-  secureConnection: false,
-  auth: {
-    user: NODEMAILER_EMAIL,
-    pass: NODEMAILER_PASSWORD,
-  },
-  rejectUnAuthrized: true,
-};
+sgMail.setApiKey(SENDGRID_API_KEY);
 
-const transporter = nodemailer.createTransport(nodemailConfig);
 const sendSmtpEmail = async (email, token, path) => {
   const chosePath = (path) => {
     if (path === '/forgot-password' || path === '/reset-password') {
@@ -50,7 +37,7 @@ const sendSmtpEmail = async (email, token, path) => {
 
   const mail = {
     to: email,
-    from: NODEMAILER_EMAIL,
+    from: PROJECT_EMAIL,
     subject: chosePath(path)
       ? fogotPasswordMessage.subject
       : verifyAccountMessage.subject,
@@ -63,7 +50,7 @@ const sendSmtpEmail = async (email, token, path) => {
         <tr>
           <td rowspan="2" style="width: 40px; height: 40px; padding: 0">
             <img
-              src="https://eva-i.com/assets/Logo-c2eed9e8.svg"
+              src="https://res.cloudinary.com/docbv5qdf/image/upload/v1744009289/Logo_molwsk.svg"
               alt="EVA-I Logo"
               width="40"
               height="40"
@@ -163,11 +150,14 @@ const sendSmtpEmail = async (email, token, path) => {
     </table>
     `,
   };
+
   try {
-    await transporter.sendMail(mail);
+    await sgMail.send(mail);
+    console.log('Sendgrid email sent');
   } catch (error) {
     console.log(error);
   }
+ 
 };
 
 module.exports = { sendSmtpEmail };

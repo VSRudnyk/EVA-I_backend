@@ -10,6 +10,7 @@
     "test": "cross-env NODE_ENV=test jest --forceExit"
   },
   "dependencies": {
+    "@sendgrid/mail": "^8.1.4",
     "bcryptjs": "^2.4.3",
     "bson-objectid": "^2.0.4",
     "cloudinary": "^1.41.3",
