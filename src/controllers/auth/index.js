@@ -1,4 +1,5 @@
 const register = require('./register');
+const registerCollaborators = require('./registerCollaborators');
 const login = require('./login');
 const logout = require('./logout');
 const verifyEmail = require('./verifyEmail');
@@ -13,6 +14,7 @@ const updateTariffPlan = require('./updateTariffPlan');
 
 module.exports = {
   register,
+  registerCollaborators,
   login,
   logout,
   verifyEmail,

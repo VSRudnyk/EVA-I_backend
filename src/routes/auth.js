@@ -23,6 +23,12 @@ router.post(
   controllerWrapper(auth.register)
 );
 router.post(
+  '/register/collaborators',
+  authorizeMiddleware,
+  // validationMiddleware(registerSchema),
+  controllerWrapper(auth.registerCollaborators)
+);
+router.post(
   '/login',
   validationMiddleware(loginSchema),
   controllerWrapper(auth.login)

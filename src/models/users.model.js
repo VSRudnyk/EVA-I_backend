@@ -3,6 +3,9 @@ const Joi = require('joi');
 
 const userSchema = new Schema(
   {
+    owner: {
+      type: String,
+    },
     name: {
       type: String,
     },
@@ -19,7 +22,7 @@ const userSchema = new Schema(
     authType: {
       type: String,
       required: true,
-      enum: ['local', 'google'],
+      enum: ['local', 'google', 'collaborator'],
       default: 'local',
     },
     avatar: {
@@ -28,7 +31,7 @@ const userSchema = new Schema(
     role: {
       type: String,
       enum: ['Admin', 'User'],
-      default: 'User',
+      default: 'Admin',
     },
     tariffPlan: {
       type: String,
