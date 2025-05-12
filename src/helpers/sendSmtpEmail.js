@@ -1,49 +1,49 @@
 const nodemailer = require('nodemailer');
-const sgMail = require('@sendgrid/mail')
-const { BACK_URL, BACK_LOCAL_URL, SENDGRID_API_KEY, PROJECT_EMAIL } =  process.env;
+const sgMail = require('@sendgrid/mail');
+const { BACK_URL, BACK_LOCAL_URL, SENDGRID_API_KEY, PROJECT_EMAIL } =
+  process.env;
 
 sgMail.setApiKey(SENDGRID_API_KEY);
 
 const sendSmtpEmail = async (email, token, path) => {
-  const chosePath = (path) => {
-    if (path === '/forgot-password' || path === '/reset-password') {
-      return true;
-    } else if (path === '/verification') {
-      return false;
-    }
-  };
-  const fogotPasswordMessage = {
+  const ifCollaboratorPath = path === '/collaborator';
+
+  const commonFieldsForPassword = {
     email,
-    subject: 'Request to reset your EVA-I password',
+    subject: `Request to ${
+      ifCollaboratorPath ? 'create' : 'reset'
+    } your EVA-I password`,
     text: 'Click on the link in this email to enter a new password',
     link: `${BACK_URL}/api/auth/verify-token/${token}`,
-    textLink: 'Reset your password',
-    salutationText:
-      'Hi, we’ve received a request to reset your EVA-I password.',
+    textLink: `${ifCollaboratorPath ? 'Create' : 'Reset'} your password`,
+    salutationText: `Hi, we’ve received a request to ${
+      ifCollaboratorPath ? 'create' : 'reset'
+    } your EVA-I password.`,
     actionText:
       'If you didn’t make the request, just ignore this message. Otherwise, please click on the link below to enter a new password:',
   };
 
-  const verifyAccountMessage = {
-    email,
-    subject: 'Confirm your email address',
-    text: 'Click on the link in this email to confirm your email address',
-    link: `${BACK_URL}/api/auth/verify/${token}`,
-    textLink: 'Confirm email address',
-    salutationText: 'Hi, thank you for creating an account!',
-    actionText:
-      'But before starting using EVA-I, please click on the link below to confirm your email address',
+  const choseEmailFild = {
+    '/forgot-password': commonFieldsForPassword,
+    '/reset-password': commonFieldsForPassword,
+    '/collaborator': commonFieldsForPassword,
+    '/verification': {
+      email,
+      subject: 'Confirm your email address',
+      text: 'Click on the link in this email to confirm your email address',
+      link: `${BACK_URL}/api/auth/verify/${token}`,
+      textLink: 'Confirm email address',
+      salutationText: 'Hi, thank you for creating an account!',
+      actionText:
+        'But before starting using EVA-I, please click on the link below to confirm your email address',
+    },
   };
 
   const mail = {
     to: email,
     from: PROJECT_EMAIL,
-    subject: chosePath(path)
-      ? fogotPasswordMessage.subject
-      : verifyAccountMessage.subject,
-    text: chosePath(path)
-      ? fogotPasswordMessage.text
-      : verifyAccountMessage.text,
+    subject: choseEmailFild[path].subject,
+    text: choseEmailFild[path].text,
     html: `
         <table style="border-spacing: 0px; border-collapse: collapse">
       <tbody>
@@ -103,24 +103,12 @@ const sendSmtpEmail = async (email, token, path) => {
               line-height: 24px;
             "
           >
-            ${
-              chosePath(path)
-                ? fogotPasswordMessage.salutationText
-                : verifyAccountMessage.salutationText
-            }
+            ${choseEmailFild[path].salutationText}
             <p></p>
-            ${
-              chosePath(path)
-                ? fogotPasswordMessage.actionText
-                : verifyAccountMessage.actionText
-            }
+            ${choseEmailFild[path].actionText}
             <p></p>
             <a
-              href="${
-                chosePath(path)
-                  ? fogotPasswordMessage.link
-                  : verifyAccountMessage.link
-              }"
+              href="${choseEmailFild[path].link}"
               style="
                 font-family: Montserrat, sans-serif;
                 font-size: 14px;
@@ -130,11 +118,7 @@ const sendSmtpEmail = async (email, token, path) => {
                 text-decoration-line: underline;
                 color: #07061f;
               "
-              >${
-                chosePath(path)
-                  ? fogotPasswordMessage.textLink
-                  : verifyAccountMessage.textLink
-              }</a
+              >${choseEmailFild[path].textLink}</a
             >
             <p></p>
             If you didn’t request this email, just ignore it.
@@ -153,11 +137,9 @@ const sendSmtpEmail = async (email, token, path) => {
 
   try {
     await sgMail.send(mail);
-    console.log('Sendgrid email sent');
   } catch (error) {
     console.log(error);
   }
- 
 };
 
 module.exports = { sendSmtpEmail };

@@ -44,7 +44,7 @@ const register = async (req, res) => {
   const { password: userPassword, ...userResponse } = newUser._doc;
 
   try {
-    await sendSmtpEmail(email, verificationCode, req.url);
+    await sendSmtpEmail(email, verificationCode, '/verification');
     res.status(200).json(userResponse);
   } catch (error) {
     res.status(error.status).json({ message: error.message });

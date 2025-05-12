@@ -26,7 +26,7 @@ const forgotPassword = async (req, res) => {
     await user.save();
     const { password, ...userResponse } = user._doc;
 
-    await sendSmtpEmail(email, token, req.url);
+    await sendSmtpEmail(email, token, '/forgot-password');
     res.status(200).json(userResponse);
   } catch (error) {
     res.status(error.status).json({ message: error.message });

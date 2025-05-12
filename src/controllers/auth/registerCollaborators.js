@@ -16,7 +16,6 @@ const registerCollaborators = async (req, res) => {
       throw createError(409, 'All specified emails are already registered');
     }
 
-    // Создаем массив новых пользователей
     const newUsers = newEmails.map((email) => {
       const resetPasswordToken = sign(
         {
@@ -36,13 +35,11 @@ const registerCollaborators = async (req, res) => {
       };
     });
 
-    // Вставляем новых пользователей в базу данных
     const createdUsers = await User.insertMany(newUsers);
 
-    // Отправляем email каждому новому пользователю
     await Promise.all(
       createdUsers.map((user) =>
-        sendSmtpEmail(user.email, user.resetPasswordToken, '/forgot-password')
+        sendSmtpEmail(user.email, user.resetPasswordToken, '/collaborator')
       )
     );
 
